@@ -7,19 +7,35 @@ const activePage = ref("default");
 function redirectToLogin() {
   router.push("/login");
 }
+function redirectToDoctors() {
+  router.push("/doctors");
+}
+function redirectToHome() {
+  router.push("/");
+}
+function redirectToSpecialities() {
+  router.push("/specialities");
+}
 </script>
 
 <template>
   <nav id="navbar">
-    <img src="../assets/img/logo.png" class="logo" />
+    <img src="../assets/img/logo.png" class="logo" @click="redirectToHome" />
     <div class="options">
       <div class="buttons">
-        <CustomButton class="nav-button" id="all-ideas"> Medici </CustomButton>
-        <CustomButton class="nav-button" id="my-ideas">
-          Specialitati
+        <CustomButton
+          class="nav-button"
+          id="all-ideas"
+          @click="redirectToDoctors"
+        >
+          Medici
         </CustomButton>
-        <CustomButton class="nav-button" id="my-ideas">
-          Descriere
+        <CustomButton
+          class="nav-button"
+          id="my-ideas"
+          @click="redirectToSpecialities"
+        >
+          Specialitati
         </CustomButton>
       </div>
     </div>
