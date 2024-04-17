@@ -16,6 +16,9 @@ function redirectToHome() {
 function redirectToSpecialities() {
   router.push("/specialities");
 }
+function redirectToAppointment() {
+  router.push("/appointment");
+}
 </script>
 
 <template>
@@ -36,6 +39,13 @@ function redirectToSpecialities() {
           @click="redirectToSpecialities"
         >
           Specialitati
+        </CustomButton>
+        <CustomButton
+          class="nav-button"
+          id="my-ideas"
+          @click="redirectToAppointment"
+        >
+          Programari
         </CustomButton>
       </div>
     </div>
