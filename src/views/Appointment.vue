@@ -5,6 +5,7 @@ import { ref } from "vue";
 import FormTitle from "../components/FormTitle.vue";
 import CustomInput from "../components/CustomInput.vue";
 import CustomButton from "../components/CustomButton.vue";
+import { createAppointment } from "../services/appointment_service";
 
 const route = useRoute();
 const scheduledPerson = ref("");
@@ -16,23 +17,57 @@ const dateOfBirth = ref("");
 const appointmentDate = ref("");
 const appointmentHour = ref("");
 const period = ref("");
-const serviceType = ref("");
 const serviceOptions = ref([]);
-const newServiceOption = ref("");
+const newServiceOption = ref();
 
 function redirectToHome() {
   router.push("/");
 }
 
-function scheduleAppointment() {
-  // Logic for scheduling appointment
+async function scheduleAppointment() {
+  const services = serviceOptions.value.map((option) => ({
+    service: option.service,
+  }));
+
+  if (services.length === 0) {
+    console.error("No service options added.");
+    return;
+  }
+
+  const appointmentData = {
+    email: email.value,
+    firstName: firstName.value,
+    lastName: lastName.value,
+    phoneNumber: phoneNumber.value,
+    dateOfBirth: dateOfBirth.value,
+    chooseDate: appointmentDate.value,
+    appointmentHour: appointmentHour.value,
+    periodOfAppointment: period.value,
+    typeOfService: services,
+  };
+
+  try {
+    const response = await createAppointment(
+      appointmentData,
+      scheduledPerson.value
+    );
+    if (response) {
+      router.push("/");
+    }
+    console.log(response);
+  } catch (error) {
+    console.error("Error scheduling appointment:", error);
+  }
 }
+
 function addServiceOption() {
   if (
     newServiceOption.value.trim() !== "" &&
-    !serviceOptions.value.includes(newServiceOption.value)
+    !serviceOptions.value.some(
+      (option) => option.service === newServiceOption.value
+    )
   ) {
-    serviceOptions.value.push(newServiceOption.value);
+    serviceOptions.value.push({ service: newServiceOption.value });
     newServiceOption.value = "";
   }
 }
@@ -151,7 +186,7 @@ function deleteServiceOption(index) {
             :key="index"
             class="service-option"
           >
-            <span>{{ option }}</span>
+            <span>{{ option.service }}</span>
             <button @click="deleteServiceOption(index)" class="delete-button">
               Delete
             </button>
@@ -212,8 +247,8 @@ function deleteServiceOption(index) {
   text-align: center;
 }
 .service-options {
-  max-height: 60px; /* Max height for showing 3 options */
-  overflow-y: auto; /* Enable vertical scrollbar */
+  max-height: 60px;
+  overflow-y: auto;
 }
 
 .service-option {

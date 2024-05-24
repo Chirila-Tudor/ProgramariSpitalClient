@@ -9,13 +9,44 @@ import PasswordInput from "../components/PasswordInput.vue";
 import CustomButton from "../components/CustomButton.vue";
 const route = useRoute();
 
-const emailText = ref("");
+const username = ref("");
 const passwordText = ref("");
 const showErrorMessage = ref(false);
 const errorMessage = ref("");
 
 function redirectToHome() {
   router.push("/");
+}
+async function login() {
+  const hashPassword = await bcrypt.hash(
+    passwordText.value,
+    "$2a$10$QkRidA35ea0Fzm/ObrOEgO"
+  );
+  if (username.value && passwordText.value) {
+    loginUser(username.value, hashPassword)
+      .then((res) => {
+        isFirstLogin(username.value).then((res) => {
+          if (res) {
+            router.push("/change-password");
+          } else {
+            router.push("/");
+          }
+        });
+        const firstLogin = localStorage.getItem("isFirstLogin");
+        if (firstLogin === "true") {
+        }
+      })
+      .catch((error) => {
+        username.value = "";
+        passwordText.value = "";
+        showErrorMessage.value = true;
+        errorMessage.value = error.message;
+      });
+  } else {
+    showErrorMessage.value = true;
+    errorMessage.value = "The fields must not be empty";
+    passwordText.value = "";
+  }
 }
 function handlePasswordTextChanged(password) {
   passwordText.value = password;
@@ -46,8 +77,8 @@ function handlePasswordTextChanged(password) {
         <CustomInput
           type="text"
           id="email-input"
-          placeholder="E-mail"
-          v-model:model-value="emailText"
+          placeholder="Username"
+          v-model:model-value="username"
           :widthInPx="12"
         />
       </div>
@@ -58,6 +89,11 @@ function handlePasswordTextChanged(password) {
           @password-changed="handlePasswordTextChanged"
           @enter-password="login"
         />
+      </div>
+      <div id="forgot-password">
+        <router-link to="/recovery" class="forgot-password-link">
+          Forgot password?
+        </router-link>
       </div>
       <div>
         <CustomButton id="sign-in" @click="login">Log in</CustomButton>
@@ -96,5 +132,14 @@ function handlePasswordTextChanged(password) {
 input {
   padding: 5px;
   border: none;
+}
+.forgot-password-link {
+  color: #007bff; /* Blue color */
+  text-decoration: none; /* Remove underline */
+  transition: color 0.3s; /* Smooth color transition on hover */
+}
+
+.forgot-password-link:hover {
+  color: #0056b3; /* Darker blue color on hover */
 }
 </style>

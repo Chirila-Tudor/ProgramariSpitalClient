@@ -19,6 +19,12 @@ function redirectToSpecialities() {
 function redirectToAppointment() {
   router.push("/appointment");
 }
+function redirectToAllAppointments() {
+  router.push("/all-appointments");
+}
+function redirectToAllUsers() {
+  router.push("/all-users");
+}
 </script>
 
 <template>
@@ -46,6 +52,20 @@ function redirectToAppointment() {
           @click="redirectToAppointment"
         >
           Programari
+        </CustomButton>
+        <CustomButton
+          class="nav-button"
+          id="my-ideas"
+          @click="redirectToAllAppointments"
+        >
+          All Appointments
+        </CustomButton>
+        <CustomButton
+          class="nav-button"
+          id="my-ideas"
+          @click="redirectToAllUsers"
+        >
+          All Users
         </CustomButton>
       </div>
     </div>
