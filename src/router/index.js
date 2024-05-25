@@ -8,6 +8,7 @@ import ChangePassword from "../views/ChangePassword.vue";
 import AllAppointmentsDashboard from "../views/AllAppointmentsDashboard.vue";
 import AllUsersDashBoard from "../views/AllUsersDashBoard.vue";
 import RequestForgotPassword from "../views/RequestForgotPassword.vue";
+import AddEmployee from "../views/AddEmployee.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -56,6 +57,11 @@ const router = createRouter({
       path: "/recovery",
       name: "recovery",
       component: RequestForgotPassword,
+    },
+    {
+      path: "/add-employee",
+      name: "add-employee",
+      component: AddEmployee,
     },
   ],
 });

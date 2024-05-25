@@ -25,6 +25,9 @@ function redirectToAllAppointments() {
 function redirectToAllUsers() {
   router.push("/all-users");
 }
+function redirectToAddEmployee() {
+  router.push("/add-employee");
+}
 </script>
 
 <template>
@@ -66,6 +69,13 @@ function redirectToAllUsers() {
           @click="redirectToAllUsers"
         >
           All Users
+        </CustomButton>
+        <CustomButton
+          class="nav-button"
+          id="my-ideas"
+          @click="redirectToAddEmployee"
+        >
+          Add Employee
         </CustomButton>
       </div>
     </div>

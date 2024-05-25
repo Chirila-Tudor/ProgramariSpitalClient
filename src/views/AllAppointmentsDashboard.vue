@@ -24,6 +24,10 @@ async function fetchAllFutureAppointmets() {
       >
         <div class="appointment-details">
           <p>
+            <strong>Scheduled Person:</strong>
+            {{ appointment.firstName + " " + appointment.lastName }}
+          </p>
+          <p>
             <strong>Date of Appointment:</strong> {{ appointment.chooseDate }}
           </p>
           <p>

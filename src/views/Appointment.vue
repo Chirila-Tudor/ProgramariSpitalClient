@@ -194,7 +194,10 @@ function deleteServiceOption(index) {
         </div>
       </div>
       <div class="button-group">
-        <CustomButton id="schedule-appointment" @click="scheduleAppointment"
+        <CustomButton
+          id="schedule-appointment"
+          @click="scheduleAppointment"
+          class="white-text"
           >Schedule Appointment</CustomButton
         >
       </div>
@@ -262,5 +265,8 @@ function deleteServiceOption(index) {
   border: none;
   color: red;
   cursor: pointer;
+}
+.white-text {
+  color: white;
 }
 </style>

@@ -96,7 +96,9 @@ function handlePasswordTextChanged(password) {
         </router-link>
       </div>
       <div>
-        <CustomButton id="sign-in" @click="login">Log in</CustomButton>
+        <CustomButton id="sign-in" @click="login" class="white-text"
+          >Log in</CustomButton
+        >
       </div>
     </div>
   </div>
@@ -141,5 +143,8 @@ input {
 
 .forgot-password-link:hover {
   color: #0056b3; /* Darker blue color on hover */
+}
+.white-text {
+  color: white;
 }
 </style>
