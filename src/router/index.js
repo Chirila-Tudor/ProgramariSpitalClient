@@ -9,6 +9,9 @@ import AllAppointmentsDashboard from "../views/AllAppointmentsDashboard.vue";
 import AllUsersDashBoard from "../views/AllUsersDashBoard.vue";
 import RequestForgotPassword from "../views/RequestForgotPassword.vue";
 import AddEmployee from "../views/AddEmployee.vue";
+import AddHall from "../views/AddHall.vue";
+import AllHospitalHalls from "../views/AllHospitalHalls.vue";
+import EditHall from "../views/EditHall.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -62,6 +65,21 @@ const router = createRouter({
       path: "/add-employee",
       name: "add-employee",
       component: AddEmployee,
+    },
+    {
+      path: "/add-hall",
+      name: "add-hall",
+      component: AddHall,
+    },
+    {
+      path: "/all-halls",
+      name: "all-halls",
+      component: AllHospitalHalls,
+    },
+    {
+      path: "/edit-halls",
+      name: "edit-halls",
+      component: EditHall,
     },
   ],
 });

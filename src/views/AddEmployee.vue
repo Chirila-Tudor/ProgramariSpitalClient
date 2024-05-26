@@ -32,7 +32,7 @@ async function addEmployee() {
   <div class="container">
     <div class="form-container">
       <div class="title">
-        <FormTitle label="Add Employee" />
+        <FormTitle label="Add Employee" class="title-width" />
       </div>
       <div class="input-group">
         <label for="username-input">Username:</label>
@@ -117,5 +117,8 @@ async function addEmployee() {
 
 .white-text {
   color: white;
+}
+.title-width {
+  width: 30vh;
 }
 </style>

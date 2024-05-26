@@ -28,6 +28,12 @@ function redirectToAllUsers() {
 function redirectToAddEmployee() {
   router.push("/add-employee");
 }
+function redirectToAddHall() {
+  router.push("/add-hall");
+}
+function redirectToAllHalls() {
+  router.push("/all-halls");
+}
 </script>
 
 <template>
@@ -76,6 +82,20 @@ function redirectToAddEmployee() {
           @click="redirectToAddEmployee"
         >
           Add Employee
+        </CustomButton>
+        <CustomButton
+          class="nav-button"
+          id="my-ideas"
+          @click="redirectToAddHall"
+        >
+          Add Hall
+        </CustomButton>
+        <CustomButton
+          class="nav-button"
+          id="my-ideas"
+          @click="redirectToAllHalls"
+        >
+          All Halls
         </CustomButton>
       </div>
     </div>
