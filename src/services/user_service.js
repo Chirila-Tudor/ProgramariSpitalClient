@@ -22,6 +22,23 @@ export async function changePassword(changePasswordDTO) {
   return response;
 }
 
+export async function addNewEmployee(userRequestDTO) {
+  const response = await fetch(`${API_URL}/addUser`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      username: userRequestDTO.username,
+      role: userRequestDTO.role,
+      email: userRequestDTO.email,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Incorrect old password");
+  }
+  return response;
+}
+
 export async function loginUser(username, hashPassword) {
   let connectionError = false;
   let response;

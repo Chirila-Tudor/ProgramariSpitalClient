@@ -194,7 +194,10 @@ function deleteServiceOption(index) {
         </div>
       </div>
       <div class="button-group">
-        <CustomButton id="schedule-appointment" @click="scheduleAppointment"
+        <CustomButton
+          id="schedule-appointment"
+          @click="scheduleAppointment"
+          class="white-text"
           >Schedule Appointment</CustomButton
         >
       </div>
@@ -207,7 +210,7 @@ function deleteServiceOption(index) {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 92vh;
 }
 
 .form-container {
@@ -215,7 +218,7 @@ function deleteServiceOption(index) {
   border: 1px solid #ccc;
   border-radius: 10px;
   background-color: #f9f9f9;
-  width: 30vh;
+  width: 35vh;
 }
 
 .input-group {
@@ -231,9 +234,10 @@ function deleteServiceOption(index) {
 
 .title {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   padding-bottom: 30px;
+  width: 30vh;
 }
 
 .material-symbols-outlined {
@@ -262,5 +266,8 @@ function deleteServiceOption(index) {
   border: none;
   color: red;
   cursor: pointer;
+}
+.white-text {
+  color: white;
 }
 </style>
