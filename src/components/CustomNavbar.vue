@@ -43,56 +43,56 @@ function redirectToAllHalls() {
       <div class="buttons">
         <CustomButton
           class="nav-button"
-          id="all-ideas"
+          id="all-doctors"
           @click="redirectToDoctors"
         >
           Medici
         </CustomButton>
         <CustomButton
           class="nav-button"
-          id="my-ideas"
+          id="specialities"
           @click="redirectToSpecialities"
         >
           Specialitati
         </CustomButton>
         <CustomButton
           class="nav-button"
-          id="my-ideas"
+          id="appointment"
           @click="redirectToAppointment"
         >
           Programari
         </CustomButton>
         <CustomButton
           class="nav-button"
-          id="my-ideas"
+          id="all-appointments"
           @click="redirectToAllAppointments"
         >
           All Appointments
         </CustomButton>
         <CustomButton
           class="nav-button"
-          id="my-ideas"
+          id="all-users"
           @click="redirectToAllUsers"
         >
           All Users
         </CustomButton>
         <CustomButton
           class="nav-button"
-          id="my-ideas"
+          id="add-employee"
           @click="redirectToAddEmployee"
         >
           Add Employee
         </CustomButton>
         <CustomButton
           class="nav-button"
-          id="my-ideas"
+          id="add-hall"
           @click="redirectToAddHall"
         >
           Add Hall
         </CustomButton>
         <CustomButton
           class="nav-button"
-          id="my-ideas"
+          id="all-halls"
           @click="redirectToAllHalls"
         >
           All Halls

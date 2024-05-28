@@ -30,6 +30,5 @@ export async function getAllAppointments() {
 export async function getAllFutureAppointments() {
   const response = await fetch(`${API_URL}/future-appointments`);
   const json = response.json();
-  console.log(json);
   return json;
 }

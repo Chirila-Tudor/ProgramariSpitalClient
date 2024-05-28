@@ -64,15 +64,6 @@ import Footer from "../components/Footer.vue";
 </template>
 
 <style scoped>
-/* .container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  position: relative;
-  margin-top: 5vh;
-} */
 .container {
   display: flex;
   flex-direction: column;
@@ -84,7 +75,7 @@ import Footer from "../components/Footer.vue";
   background-color: #f5f5f5;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  min-height: 90vh;
+  min-height: 87.8vh;
 }
 
 .title_description {

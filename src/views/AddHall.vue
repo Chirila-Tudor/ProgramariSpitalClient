@@ -124,7 +124,7 @@ function deleteEquipment(index) {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 90vh;
 }
 
 .form-container {
@@ -132,7 +132,7 @@ function deleteEquipment(index) {
   border: 1px solid #ccc;
   border-radius: 10px;
   background-color: #f9f9f9;
-  width: 40vh; /* Increased width to accommodate title on a single line */
+  width: 40vh;
 }
 
 .input-group {
