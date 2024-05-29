@@ -49,7 +49,10 @@ const toggleActive = (id) => {
             </p>
           </div>
           <div class="button">
-            <CustomButton id="change" @click="() => toggleActive(user.id)"
+            <CustomButton
+              id="change"
+              @click="() => toggleActive(user.id)"
+              class="text_white"
               >Change</CustomButton
             >
           </div>
@@ -122,5 +125,8 @@ h1 {
   font-size: 14px;
   width: 100px;
   height: 100px;
+}
+.text_white {
+  color: white;
 }
 </style>

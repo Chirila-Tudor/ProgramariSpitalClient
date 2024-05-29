@@ -124,6 +124,10 @@ function handlePasswordTextChanged(password) {
   flex-direction: column;
   align-items: center;
   margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #f9f9f9;
   gap: 20px;
 }
 .title {

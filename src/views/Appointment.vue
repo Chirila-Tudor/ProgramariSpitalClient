@@ -210,7 +210,7 @@ function deleteServiceOption(index) {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 92vh;
+  height: 110vh;
 }
 
 .form-container {
@@ -218,7 +218,7 @@ function deleteServiceOption(index) {
   border: 1px solid #ccc;
   border-radius: 10px;
   background-color: #f9f9f9;
-  width: 35vh;
+  width: 40vh;
 }
 
 .input-group {
