@@ -1,6 +1,8 @@
 <script setup>
 import { computed, onMounted, ref } from "vue";
 import { getAllFutureAppointments } from "../services/appointment_service";
+import CustomButton from "../components/CustomButton.vue";
+import router from "../router";
 
 const appointments = ref([]);
 
@@ -10,6 +12,9 @@ onMounted(() => {
 
 async function fetchAllFutureAppointmets() {
   await getAllFutureAppointments().then((res) => (appointments.value = res));
+}
+function editAppointment(id) {
+  router.push({ name: "edit-appointment", params: { id: id } });
 }
 </script>
 
@@ -41,6 +46,16 @@ async function fetchAllFutureAppointmets() {
           <p>
             <strong>Appointment Hour:</strong> {{ appointment.appointmentHour }}
           </p>
+          <CustomButton
+            id="edit-button"
+            :isActive="true"
+            :heightInPx="30"
+            :widthInPx="70"
+            class="white-text edit-color"
+            @click="editAppointment(appointment.id)"
+          >
+            Edit
+          </CustomButton>
         </div>
       </div>
     </div>
@@ -75,5 +90,8 @@ h1 {
 
 .appointment-details p {
   margin: 5px 0;
+}
+.white-text {
+  color: white;
 }
 </style>

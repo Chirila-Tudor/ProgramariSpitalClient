@@ -79,7 +79,7 @@ function handlePasswordTextChanged(password) {
           id="email-input"
           placeholder="Username"
           v-model:model-value="username"
-          :widthInPx="12"
+          :widthInPx="300"
         />
       </div>
       <div id="password-input">
@@ -88,6 +88,7 @@ function handlePasswordTextChanged(password) {
           :value="passwordText"
           @password-changed="handlePasswordTextChanged"
           @enter-password="login"
+          :widthInPx="300"
         />
       </div>
       <div id="forgot-password">
@@ -129,6 +130,7 @@ function handlePasswordTextChanged(password) {
   padding: 20px;
   background-color: #f9f9f9;
   gap: 20px;
+  width: 30vh;
 }
 .title {
   display: flex;
@@ -140,13 +142,13 @@ input {
   border: none;
 }
 .forgot-password-link {
-  color: #007bff; /* Blue color */
-  text-decoration: none; /* Remove underline */
-  transition: color 0.3s; /* Smooth color transition on hover */
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.3s;
 }
 
 .forgot-password-link:hover {
-  color: #0056b3; /* Darker blue color on hover */
+  color: #0056b3;
 }
 .white-text {
   color: white;

@@ -8,6 +8,10 @@ const showBorder = ref(false);
 const props = defineProps({
   label: String,
   value: String,
+  widthInPx: {
+    type: Number,
+    default: 200,
+  },
 });
 
 const emits = defineEmits(["enter-password", "password-changed"]);
@@ -27,7 +31,7 @@ function handleEnterPress() {
 </script>
 
 <template>
-  <span id="password-container" :class="{ 'input-border': showBorder }">
+  <div id="password-container" :class="{ 'input-border': showBorder }">
     <CustomInput
       :type="showPassword ? 'text' : 'password'"
       :placeholder="label"
@@ -37,61 +41,62 @@ function handleEnterPress() {
       @focus="showBorder = true"
       @blur="showBorder = false"
       id="password-input"
-      :widthInPx="10"
+      :widthInPx="widthInPx"
+      :heightInPx="heightInPx"
     />
-    <button
-      style="background-color: white; border-radius: 0px 2px 2px 0px"
-      @click="changeShowPassword"
-    >
-      <span
-        class="material-symbols-outlined"
-        style="cursor: pointer; font-size: 20px"
-      >
+    <button class="toggle-button" @click="changeShowPassword">
+      <span class="material-symbols-outlined">
         {{ showPassword ? "visibility_off" : "visibility" }}
       </span>
     </button>
-  </span>
+  </div>
 </template>
 
 <style scoped>
-input {
-  padding: 5px;
-  border: none;
-}
-
 #password-container {
-  display: flex;
-  outline: none;
+  position: relative;
 }
 
-#password-container:hover {
-  border: 1px solid slategray;
-}
-
-#password-input {
-  width: 6vw;
-  outline: none;
-  border-radius: 2px 0px 0px 2px;
-}
-
-#password-input:hover {
+.toggle-button {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
   border: none;
-}
-.input-border {
-  border: 1px solid black;
-}
-
-button {
-  border: none;
-  width: 2vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background-color: transparent;
+  cursor: pointer;
 }
 
-button,
-button:focus {
-  border: none;
+.toggle-button:hover {
+  background-color: #f0f0f0;
+}
+
+.material-icons {
+  font-size: 20px;
+}
+
+.input-container {
+  position: relative;
+}
+
+.input {
+  width: calc(100% - 40px);
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.input:focus {
   outline: none;
+  border-color: rgb(78, 2, 2);
+}
+
+.input.error {
+  border-color: red;
+}
+
+.input::placeholder {
+  color: slategray;
 }
 </style>
