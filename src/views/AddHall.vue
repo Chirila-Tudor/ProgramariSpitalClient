@@ -4,7 +4,7 @@ import CustomButton from "../components/CustomButton.vue";
 import CustomInput from "../components/CustomInput.vue";
 import router from "../router";
 import { useRoute } from "vue-router";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { createHall } from "../services/hall_service";
 
 const route = useRoute();
@@ -13,11 +13,40 @@ const equipmentList = ref([]);
 const newEquipment = ref("");
 const doctorName = ref("");
 
+const errors = ref({
+  roomName: "",
+  doctorName: "",
+  equipmentList: "",
+});
+
 function redirectToHome() {
   router.push("/");
 }
+function redirectToAllHalls() {
+  router.push("/all-halls");
+}
 
 async function addHospitalHall() {
+  for (const key in errors.value) {
+    errors.value[key] = "";
+  }
+  let valid = true;
+  if (!roomName.value) {
+    errors.value.roomName = "Room name is required";
+    valid = false;
+  }
+  if (!doctorName.value) {
+    errors.value.doctorName = "Doctor is required";
+    valid = false;
+  }
+  if (equipmentList.value.length == 0) {
+    errors.value.equipmentList = "At least one equipment is required";
+    valid = false;
+  }
+  if (!valid) {
+    return;
+  }
+
   const equipments = equipmentList.value.map((equipment) => ({
     name: equipment.name,
   }));
@@ -36,9 +65,8 @@ async function addHospitalHall() {
   try {
     const response = await createHall(hospitalHallData);
     if (response) {
-      router.push("/");
+      redirectToAllHalls();
     }
-    console.log(response);
   } catch (error) {
     console.error("Error adding hospital hall:", error);
   }
@@ -59,6 +87,45 @@ function addEquipment() {
 function deleteEquipment(index) {
   equipmentList.value.splice(index, 1);
 }
+
+watch(roomName, () => {
+  if (errors.value.roomName) errors.value.roomName = "";
+});
+watch(doctorName, () => {
+  if (errors.value.doctorName) errors.value.doctorName = "";
+});
+watch(
+  equipmentList,
+  () => {
+    if (errors.value.equipmentList) errors.value.equipmentList = "";
+  },
+  { deep: true }
+);
+watch(roomName, (newValue) => {
+  if (errors.value.roomName && newValue) {
+    errors.value.roomName = "";
+  } else if (!newValue) {
+    errors.value.roomName = "Room Name is required";
+  }
+});
+watch(doctorName, (newValue) => {
+  if (errors.value.doctorName && newValue) {
+    errors.value.doctorName = "";
+  } else if (!newValue) {
+    errors.value.doctorName = "Doctor is required";
+  }
+});
+watch(
+  equipmentList,
+  () => {
+    if (errors.value.equipmentList && equipmentList.value.length > 0) {
+      errors.value.equipmentList = "";
+    } else if (equipmentList.value.length === 0) {
+      errors.value.equipmentList = "At least one equipment option is required";
+    }
+  },
+  { deep: true }
+);
 </script>
 
 <template>
@@ -69,6 +136,9 @@ function deleteEquipment(index) {
       </div>
       <div class="input-group">
         <label for="room-name-input">Room Name:</label>
+        <div v-if="errors.roomName" class="error-message">
+          {{ errors.roomName }}
+        </div>
         <CustomInput
           type="text"
           id="room-name-input"
@@ -78,6 +148,9 @@ function deleteEquipment(index) {
       </div>
       <div class="input-group">
         <label for="doctor-name-input">Doctor Name:</label>
+        <div v-if="errors.doctorName" class="error-message">
+          {{ errors.doctorName }}
+        </div>
         <CustomInput
           type="text"
           id="doctor-name-input"
@@ -87,6 +160,9 @@ function deleteEquipment(index) {
       </div>
       <div class="input-group">
         <label for="equipment-input">Equipments:</label>
+        <div v-if="errors.equipmentList" class="error-message">
+          {{ errors.equipmentList }}
+        </div>
         <CustomInput
           type="text"
           id="equipment-input"
@@ -189,5 +265,10 @@ function deleteEquipment(index) {
 .title-width {
   width: 30vh;
   margin-left: 5vh;
+}
+.error-message {
+  color: red;
+  font-size: 12px;
+  font-weight: bold;
 }
 </style>

@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import CustomButton from "../components/CustomButton.vue";
 import CustomInput from "../components/CustomInput.vue";
 import FormTitle from "../components/FormTitle.vue";
@@ -10,7 +10,39 @@ const username = ref("");
 const role = ref("");
 const email = ref("");
 
+const errors = ref({
+  username: "",
+  role: "",
+  email: "",
+});
+
+function redirectToAllUsers() {
+  router.push("/all-users");
+}
+
 async function addEmployee() {
+  for (const key in errors.value) {
+    errors.value[key] = "";
+  }
+
+  let valid = true;
+  if (!username.value) {
+    errors.value.username = "Username is required";
+    valid = false;
+  }
+  if (!role.value) {
+    errors.value.role = "Role is required";
+    valid = false;
+  }
+  if (!email.value) {
+    errors.value.email = "Email is required";
+    valid = false;
+  }
+
+  if (!valid) {
+    return;
+  }
+
   const employeeData = {
     username: username.value,
     role: role.value,
@@ -19,13 +51,35 @@ async function addEmployee() {
   try {
     const response = await addNewEmployee(employeeData);
     if (response) {
-      router.push("/");
+      redirectToAllUsers();
     }
     console.log(response);
   } catch (error) {
     console.error("Error adding employee:", error);
   }
 }
+
+watch(username, (newValue) => {
+  if (errors.value.username && newValue) {
+    errors.value.username = "";
+  } else if (!newValue) {
+    errors.value.username = "Username is required";
+  }
+});
+watch(email, (newValue) => {
+  if (errors.value.email && newValue) {
+    errors.value.email = "";
+  } else if (!newValue) {
+    errors.value.email = "Email is required";
+  }
+});
+watch(role, (newValue) => {
+  if (errors.value.role && newValue) {
+    errors.value.role = "";
+  } else if (!newValue) {
+    errors.value.role = "Role is required";
+  }
+});
 </script>
 
 <template>
@@ -36,6 +90,9 @@ async function addEmployee() {
       </div>
       <div class="input-group">
         <label for="username-input">Username:</label>
+        <div v-if="errors.username" class="error-message">
+          {{ errors.username }}
+        </div>
         <CustomInput
           type="text"
           id="username-input"
@@ -45,6 +102,9 @@ async function addEmployee() {
       </div>
       <div class="input-group">
         <label for="role-input">Role:</label>
+        <div v-if="errors.role" class="error-message">
+          {{ errors.role }}
+        </div>
         <CustomInput
           type="text"
           id="role-input"
@@ -54,6 +114,9 @@ async function addEmployee() {
       </div>
       <div class="input-group">
         <label for="email-input">Email:</label>
+        <div v-if="errors.email" class="error-message">
+          {{ errors.email }}
+        </div>
         <CustomInput
           type="email"
           id="email-input"
@@ -120,5 +183,10 @@ async function addEmployee() {
 }
 .title-width {
   width: 30vh;
+}
+.error-message {
+  color: red;
+  font-size: 12px;
+  font-weight: bold;
 }
 </style>
