@@ -17,6 +17,7 @@ const dateOfBirth = ref("");
 const appointmentDate = ref("");
 const appointmentHour = ref("");
 const period = ref("");
+const hall = ref("");
 const serviceOptions = ref([]);
 const newServiceOption = ref();
 
@@ -43,6 +44,7 @@ async function scheduleAppointment() {
     chooseDate: appointmentDate.value,
     appointmentHour: appointmentHour.value,
     periodOfAppointment: period.value,
+    hospitalHallName: hall.value,
     typeOfService: services,
   };
 
@@ -172,6 +174,15 @@ function deleteServiceOption(index) {
         />
       </div>
       <div class="input-group">
+        <label for="room-input">Hall:</label>
+        <CustomInput
+          type="text"
+          id="room-input"
+          placeholder="Hall"
+          v-model:model-value="hall"
+        />
+      </div>
+      <div class="input-group">
         <label for="service-type-input">Type of Service:</label>
         <CustomInput
           type="text"
@@ -210,7 +221,7 @@ function deleteServiceOption(index) {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 110vh;
+  height: 150vh;
 }
 
 .form-container {
