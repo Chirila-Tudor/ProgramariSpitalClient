@@ -1,8 +1,31 @@
 <script setup>
 import router from "../router";
 import CustomButton from "../components/CustomButton.vue";
-import { ref } from "vue";
+import ModalCustom from "./ModalCustom.vue";
+import { ref, onMounted, computed, watch } from "vue";
 const activePage = ref("default");
+const username = ref("");
+const userRole = ref("");
+const isModalVisible = ref(false);
+
+onMounted(() => {
+  username.value = localStorage.getItem("username") || "";
+  userRole.value = localStorage.getItem("role") || "";
+});
+
+watch(username, (newUsername) => {
+  localStorage.setItem("username", newUsername);
+});
+
+watch(userRole, (newRole) => {
+  localStorage.setItem("role", newRole);
+});
+const buttonText = computed(() => {
+  return username.value ? "Hi, " + username.value : "Login";
+});
+const buttonId = computed(() => {
+  return username.value ? "logout" : "login";
+});
 
 function redirectToLogin() {
   router.push("/login");
@@ -34,6 +57,28 @@ function redirectToAddHall() {
 function redirectToAllHalls() {
   router.push("/all-halls");
 }
+const handleClick = () => {
+  if (username.value) {
+    isModalVisible.value = true;
+  } else {
+    redirectToLogin();
+  }
+};
+const logout = () => {
+  localStorage.removeItem("username");
+  localStorage.removeItem("role");
+  username.value = "";
+  userRole.value = "";
+  router.push({ name: "default" });
+};
+const confirmLogout = () => {
+  logout();
+  isModalVisible.value = false;
+};
+
+const cancelLogout = () => {
+  isModalVisible.value = false;
+};
 </script>
 
 <template>
@@ -56,6 +101,7 @@ function redirectToAllHalls() {
           Specialitati
         </CustomButton>
         <CustomButton
+          v-if="userRole === 'NURSE'"
           class="nav-button"
           id="appointment"
           @click="redirectToAppointment"
@@ -63,51 +109,63 @@ function redirectToAllHalls() {
           Programari
         </CustomButton>
         <CustomButton
+          v-if="userRole === 'NURSE' || userRole === 'ADMIN'"
           class="nav-button"
           id="all-appointments"
           @click="redirectToAllAppointments"
         >
-          All Appointments
+          Toate Programarile
         </CustomButton>
         <CustomButton
+          v-if="userRole === 'ADMIN'"
           class="nav-button"
           id="all-users"
           @click="redirectToAllUsers"
         >
-          All Users
+          Toti Utilizatorii
         </CustomButton>
         <CustomButton
+          v-if="userRole === 'ADMIN'"
           class="nav-button"
           id="add-employee"
           @click="redirectToAddEmployee"
         >
-          Add Employee
+          Adaugare Angajat
         </CustomButton>
         <CustomButton
+          v-if="userRole === 'ADMIN'"
           class="nav-button"
           id="add-hall"
           @click="redirectToAddHall"
         >
-          Add Hall
+          Adaugare Sala
         </CustomButton>
         <CustomButton
+          v-if="userRole === 'ADMIN'"
           class="nav-button"
           id="all-halls"
           @click="redirectToAllHalls"
         >
-          All Halls
+          Toate Salile
         </CustomButton>
       </div>
     </div>
     <div>
       <CustomButton
         class="nav-button"
-        id="login"
-        @click="redirectToLogin"
+        :id="buttonId"
+        @click="handleClick"
         :is-active="activePage === 'login'"
       >
-        Login
+        {{ buttonText }}
       </CustomButton>
+      <ModalCustom
+        v-if="isModalVisible"
+        :title="'Log Out'"
+        :message="'Are you sure you want to log out?'"
+        @confirm="confirmLogout"
+        @cancel="cancelLogout"
+      />
     </div>
   </nav>
 </template>
@@ -155,7 +213,6 @@ nav {
   display: flex;
   justify-content: space-between;
   align-content: center;
-  width: 15vw;
   align-items: center;
 }
 

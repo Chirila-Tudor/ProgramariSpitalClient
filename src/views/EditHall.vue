@@ -15,10 +15,14 @@ const newEquipment = ref("");
 const doctorName = ref("");
 
 onMounted(async () => {
-  const hallData = await getHospitalHall(hallId);
-  roomName.value = hallData.room;
-  doctorName.value = hallData.doctorUsername;
-  equipmentList.value = hallData.equipment;
+  try {
+    const hallData = await getHospitalHall(hallId);
+    roomName.value = hallData.room;
+    doctorName.value = hallData.doctorUsername;
+    equipmentList.value = hallData.equipment;
+  } catch (error) {
+    console.error("Error fetching hall data:", error);
+  }
 });
 
 async function updateHospitalHalls() {
@@ -44,6 +48,7 @@ async function updateHospitalHalls() {
 function addEquipment() {
   if (
     newEquipment.value.trim() !== "" &&
+    equipmentList.value &&
     !equipmentList.value.some(
       (equipment) => equipment.name === newEquipment.value
     )
@@ -110,7 +115,7 @@ function deleteEquipment(index) {
           @click="updateHospitalHalls"
           class="white-text"
         >
-          Update Hospital Hall
+          Update Hall
         </CustomButton>
       </div>
     </div>
@@ -130,7 +135,7 @@ function deleteEquipment(index) {
   border: 1px solid #ccc;
   border-radius: 10px;
   background-color: #f9f9f9;
-  width: 40vh; /* Increased width to accommodate title on a single line */
+  width: 40vh;
 }
 
 .input-group {

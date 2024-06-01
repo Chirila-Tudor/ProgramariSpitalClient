@@ -1,6 +1,17 @@
 <script setup>
 import { ref } from "vue";
-import { defineEmits } from "vue";
+import { defineEmits, defineProps } from "vue";
+
+const props = defineProps({
+  title: {
+    type: String,
+    required: true,
+  },
+  message: {
+    type: String,
+    required: true,
+  },
+});
 
 const emit = defineEmits(["confirm", "cancel"]);
 const confirm = () => {
@@ -15,10 +26,11 @@ const cancel = () => {
   <div class="modal-overlay">
     <div class="modal-container">
       <div class="modal-content">
-        <p>Are you sure you want to delete this hall?</p>
+        <h2>{{ title }}</h2>
+        <p>{{ message }}</p>
         <div class="button-group">
-          <button @click="confirm">Yes</button>
-          <button @click="cancel">No</button>
+          <button @click="confirm">Da</button>
+          <button @click="cancel">Nu</button>
         </div>
       </div>
     </div>
@@ -35,6 +47,7 @@ const cancel = () => {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 999;
 }
 
 .modal-container {

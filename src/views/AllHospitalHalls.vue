@@ -81,6 +81,8 @@ function editHall(hallId) {
     </div>
     <ModalCustom
       v-if="showModal"
+      :title="'Delete hall'"
+      :message="'Are you sure you want to delete this hall?'"
       @confirm="deleteConfirmed"
       @cancel="cancelDelete"
     />

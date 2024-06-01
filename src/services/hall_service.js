@@ -27,7 +27,7 @@ export async function deleteHall(hallId) {
 
 export async function updateHospitalHall(hallId, requestData) {
   try {
-    const response = await fetch(`${API_URL}/hospital-halls/${hallId}`, {
+    const response = await fetch(`${API_URL}/update-hall?hallId=${hallId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

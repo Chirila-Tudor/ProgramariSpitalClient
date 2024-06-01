@@ -60,7 +60,7 @@ const toggleActive = (id) => {
       </div>
     </div>
     <div v-else>
-      <p>No appointments available.</p>
+      <p>No users available.</p>
     </div>
   </div>
 </template>
