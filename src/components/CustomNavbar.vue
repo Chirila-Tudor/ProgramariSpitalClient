@@ -57,6 +57,9 @@ function redirectToAddHall() {
 function redirectToAllHalls() {
   router.push("/all-halls");
 }
+function redirectToAllAppointmentsForPatient() {
+  router.push("/all-appointments-patient");
+}
 const handleClick = () => {
   if (username.value) {
     isModalVisible.value = true;
@@ -147,6 +150,14 @@ const cancelLogout = () => {
           @click="redirectToAllHalls"
         >
           Toate Salile
+        </CustomButton>
+        <CustomButton
+          v-if="userRole === 'PATIENT'"
+          class="nav-button"
+          id="all-appointments-patient"
+          @click="redirectToAllAppointmentsForPatient"
+        >
+          Programarile tale
         </CustomButton>
       </div>
     </div>

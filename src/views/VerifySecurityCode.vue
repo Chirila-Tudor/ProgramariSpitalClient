@@ -41,7 +41,7 @@ async function fetchRequestPassword() {
       </div>
       <CustomButton
         type="submit"
-        class="submit-button"
+        class="submit-button white-text"
         @click="fetchRequestPassword"
         >Request New Password</CustomButton
       >
@@ -102,5 +102,8 @@ h1 {
 }
 .submit-button {
   margin: 0 auto;
+}
+.white-text {
+  color: white;
 }
 </style>

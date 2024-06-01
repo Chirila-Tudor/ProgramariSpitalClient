@@ -52,3 +52,10 @@ export async function getAllFutureAppointments() {
   const json = response.json();
   return json;
 }
+export async function getAppointmentsByScheduledPerson(username) {
+  const response = await fetch(
+    `${API_URL}/getAppointmentForUser?username=${username}`
+  );
+  const json = await response.json();
+  return json;
+}
