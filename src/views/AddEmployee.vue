@@ -146,7 +146,8 @@ watch(role, (newValue) => {
   border: 1px solid #ccc;
   border-radius: 10px;
   background-color: #f9f9f9;
-  width: 30vh;
+  width: 40vh;
+  height: 50vh;
 }
 
 .input-group {
@@ -183,6 +184,7 @@ watch(role, (newValue) => {
 }
 .title-width {
   width: 30vh;
+  margin-top: 15px;
 }
 .error-message {
   color: red;

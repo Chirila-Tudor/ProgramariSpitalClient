@@ -16,6 +16,7 @@
     "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
     "mitt": "^3.0.1",
+    "sha256": "^0.2.0",
     "vue": "^3.3.4",
     "vue-router": "^4.2.5",
     "vue-yup-validation": "^0.0.3",

@@ -2,6 +2,8 @@
 import router from "../router";
 import { useRoute } from "vue-router";
 import { ref } from "vue";
+import sha256 from "sha256";
+import { loginUser } from "../services/user_service";
 import FormTitle from "../components/FormTitle.vue";
 import InvalidInputMessage from "../components/InvalidInputMessage.vue";
 import CustomInput from "../components/CustomInput.vue";
@@ -18,22 +20,14 @@ function redirectToHome() {
   router.push("/");
 }
 async function login() {
-  const hashPassword = await bcrypt.hash(
-    passwordText.value,
-    "$2a$10$QkRidA35ea0Fzm/ObrOEgO"
-  );
   if (username.value && passwordText.value) {
-    loginUser(username.value, hashPassword)
+    loginUser(username.value, sha256(passwordText.value))
       .then((res) => {
-        isFirstLogin(username.value).then((res) => {
-          if (res) {
-            router.push("/change-password");
-          } else {
-            router.push("/");
-          }
-        });
         const firstLogin = localStorage.getItem("isFirstLogin");
         if (firstLogin === "true") {
+          router.push("/change-password");
+        } else {
+          router.push("/");
         }
       })
       .catch((error) => {
@@ -130,12 +124,14 @@ function handlePasswordTextChanged(password) {
   padding: 20px;
   background-color: #f9f9f9;
   gap: 20px;
-  width: 30vh;
+  width: 40vh;
+  height: 50vh;
 }
 .title {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 5vh;
 }
 input {
   padding: 5px;

@@ -1,13 +1,14 @@
 <script setup>
 import CustomButton from "../components/CustomButton.vue";
 import router from "../router";
-import { requestNewPassword } from "../services/user_service";
+import { forgotPassword } from "../services/user_service";
 import { ref } from "vue";
 const username = ref("");
-const securityCode = ref("");
 
-async function fetchRequestPassoword(username, securityCode) {
-  await requestNewPassword(username, securityCode);
+async function fetchForgotPassword() {
+  console.log(username.value);
+  await forgotPassword(username.value);
+  router.push("/verify-code");
 }
 </script>
 
@@ -15,24 +16,23 @@ async function fetchRequestPassoword(username, securityCode) {
   <div class="forgot-password-container">
     <div class="forgot-password-card">
       <h1>Request New Password</h1>
-      <form @submit.prevent="submitForgotPassword" class="forgot-password-form">
-        <div class="input-group">
-          <label for="username" class="input-label">Username:</label>
-          <input
-            type="text"
-            id="username"
-            v-model="username"
-            class="input-field"
-            required
-          />
-        </div>
-        <CustomButton
-          type="submit"
-          class="submit-button"
-          @click="fetchRequestPassoword(username, securityCode)"
-          >Request New Password</CustomButton
-        >
-      </form>
+      <div class="input-group">
+        <label for="username" class="input-label">Username:</label>
+        <input
+          type="text"
+          id="username"
+          v-model="username"
+          class="input-field"
+          required
+        />
+      </div>
+      <CustomButton
+        type="submit"
+        class="submit-button white-text"
+        :widthInPx="150"
+        @click="fetchForgotPassword"
+        >Request New Password</CustomButton
+      >
     </div>
   </div>
 </template>
@@ -46,8 +46,8 @@ async function fetchRequestPassoword(username, securityCode) {
 }
 
 .forgot-password-card {
-  width: 500px; /* Adjust the width as needed */
-  height: 300px;
+  width: 50vh;
+  height: 40vh;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -58,6 +58,7 @@ h1 {
   font-size: 24px;
   margin-bottom: 20px;
   text-align: center;
+  margin-top: 5vh;
 }
 
 .forgot-password-form {
@@ -81,6 +82,10 @@ h1 {
   border-radius: 4px;
 }
 .submit-button {
-  margin: 0 auto; /* Center the button horizontally */
+  margin: 0 auto;
+  margin-top: 10vh;
+}
+.white-text {
+  color: white;
 }
 </style>

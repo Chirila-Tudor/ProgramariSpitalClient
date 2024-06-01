@@ -9,11 +9,7 @@ export async function changePassword(changePasswordDTO) {
   const response = await fetch(`${API_URL}/change-password`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      username: changePasswordDTO.username,
-      oldPassword: changePasswordDTO.oldPassword,
-      newPassword: changePasswordDTO.newPassword,
-    }),
+    body: JSON.stringify(changePasswordDTO),
   });
 
   if (!response.ok) {
@@ -100,6 +96,18 @@ export async function requestNewPassword(username, securityCode) {
     {
       method: "POST",
       body: securityCode,
+    }
+  );
+  return response;
+}
+
+export async function forgotPassword(username) {
+  console.log(username);
+  const response = await fetch(
+    `${API_URL}/forgot-password?username=${username}`,
+    {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
     }
   );
   return response;

@@ -115,7 +115,7 @@ function deleteEquipment(index) {
           @click="updateHospitalHalls"
           class="white-text"
         >
-          Update Hospital Hall
+          Update Hall
         </CustomButton>
       </div>
     </div>

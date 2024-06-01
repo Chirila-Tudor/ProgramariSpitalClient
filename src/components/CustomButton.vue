@@ -5,6 +5,7 @@ const props = defineProps({
   isActive: Boolean,
   heightInPx: Number,
   widthInPx: Number,
+  isVisible: Boolean,
 });
 </script>
 

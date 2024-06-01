@@ -389,6 +389,7 @@ watch(
       <div class="button-group">
         <CustomButton
           id="schedule-appointment"
+          :widthInPx="150"
           @click="scheduleAppointment"
           class="white-text"
           >Schedule Appointment</CustomButton
