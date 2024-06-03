@@ -60,6 +60,9 @@ function redirectToAllHalls() {
 function redirectToAllAppointmentsForPatient() {
   router.push("/all-appointments-patient");
 }
+function redirectToAllAppointmentsForDoctor() {
+  router.push("/all-appointments-doctor");
+}
 const handleClick = () => {
   if (username.value) {
     isModalVisible.value = true;
@@ -156,6 +159,14 @@ const cancelLogout = () => {
           class="nav-button"
           id="all-appointments-patient"
           @click="redirectToAllAppointmentsForPatient"
+        >
+          Programarile tale
+        </CustomButton>
+        <CustomButton
+          v-if="userRole === 'DOCTOR'"
+          class="nav-button"
+          id="all-appointments-patient"
+          @click="redirectToAllAppointmentsForDoctor"
         >
           Programarile tale
         </CustomButton>

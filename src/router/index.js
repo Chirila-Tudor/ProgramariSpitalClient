@@ -15,6 +15,7 @@ import EditHall from "../views/EditHall.vue";
 import EditAppointment from "../views/EditAppointment.vue";
 import VerifySecurityCode from "../views/VerifySecurityCode.vue";
 import AllAppointmentsForUser from "../views/AllAppointmentsForUser.vue";
+import AllAppointmentsForDoctor from "../views/AllAppointmentsForDoctor.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -98,6 +99,11 @@ const router = createRouter({
       path: "/all-appointments-patient",
       name: "all-appointments-patient",
       component: AllAppointmentsForUser,
+    },
+    {
+      path: "/all-appointments-doctor",
+      name: "all-appointments-doctor",
+      component: AllAppointmentsForDoctor,
     },
   ],
 });

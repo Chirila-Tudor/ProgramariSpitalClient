@@ -29,7 +29,12 @@ onMounted(async () => {
 
 async function handleUpdate() {
   await updateAppointment(id, appointment.value);
-  router.push({ name: "all-appointments" });
+  const role = localStorage.getItem("role");
+  if (role === "DOCTOR") {
+    router.push({ name: "all-appointments-doctor" });
+  } else if (role === "ADMIN") {
+    router.push({ name: "all-appointments" });
+  }
 }
 </script>
 
