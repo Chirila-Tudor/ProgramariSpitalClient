@@ -34,7 +34,8 @@ async function login() {
         username.value = "";
         passwordText.value = "";
         showErrorMessage.value = true;
-        errorMessage.value = error.message;
+        errorMessage.value =
+          "Incorrect username or password. Please try again.";
       });
   } else {
     showErrorMessage.value = true;
@@ -148,5 +149,10 @@ input {
 }
 .white-text {
   color: white;
+}
+.error-message-visible {
+  display: block;
+  color: red;
+  margin-bottom: 10px;
 }
 </style>

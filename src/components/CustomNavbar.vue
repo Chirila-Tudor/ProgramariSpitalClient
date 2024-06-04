@@ -7,10 +7,14 @@ const activePage = ref("default");
 const username = ref("");
 const userRole = ref("");
 const isModalVisible = ref(false);
+const dateTime = ref(new Date().toLocaleString());
 
 onMounted(() => {
   username.value = localStorage.getItem("username") || "";
   userRole.value = localStorage.getItem("role") || "";
+  setInterval(() => {
+    dateTime.value = new Date().toLocaleString();
+  }, 1000);
 });
 
 watch(username, (newUsername) => {
@@ -90,6 +94,7 @@ const cancelLogout = () => {
 <template>
   <nav id="navbar">
     <img src="../assets/img/logo.png" class="logo" @click="redirectToHome" />
+    <div class="date-time">{{ dateTime }}</div>
     <div class="options">
       <div class="buttons">
         <CustomButton
@@ -165,7 +170,7 @@ const cancelLogout = () => {
         <CustomButton
           v-if="userRole === 'DOCTOR'"
           class="nav-button"
-          id="all-appointments-patient"
+          id="all-appointments-doctor"
           @click="redirectToAllAppointmentsForDoctor"
         >
           Programarile tale
@@ -220,7 +225,7 @@ nav {
   background-color: white;
   box-sizing: border-box;
   display: flex;
-  gap: 0.5vw;
+  gap: 2vw;
   width: 100vw;
   align-items: center;
   min-height: 6vh;
@@ -242,7 +247,7 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 85vw;
+  width: 65vw;
 }
 
 .nav-button {
@@ -255,5 +260,10 @@ nav {
 
 .nav-button:hover {
   background-color: var(--selected-color);
+}
+.date-time {
+  font-size: 14px;
+  margin-left: 20px;
+  font-weight: bold;
 }
 </style>
