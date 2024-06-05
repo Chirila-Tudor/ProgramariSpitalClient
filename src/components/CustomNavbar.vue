@@ -67,6 +67,12 @@ function redirectToAllAppointmentsForPatient() {
 function redirectToAllAppointmentsForDoctor() {
   router.push("/all-appointments-doctor");
 }
+function redirectToAddService() {
+  router.push("/add-service");
+}
+function redirectToAllServices() {
+  router.push("/all-services");
+}
 const handleClick = () => {
   if (username.value) {
     isModalVisible.value = true;
@@ -174,6 +180,22 @@ const cancelLogout = () => {
           @click="redirectToAllAppointmentsForDoctor"
         >
           Programarile tale
+        </CustomButton>
+        <CustomButton
+          v-if="userRole === 'ADMIN'"
+          class="nav-button"
+          id="add-service"
+          @click="redirectToAddService"
+        >
+          Adaugare serviciu
+        </CustomButton>
+        <CustomButton
+          v-if="userRole === 'ADMIN'"
+          class="nav-button"
+          id="all-services"
+          @click="redirectToAllServices"
+        >
+          Toate serviciile
         </CustomButton>
       </div>
     </div>

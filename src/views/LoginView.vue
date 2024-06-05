@@ -21,13 +21,13 @@ function redirectToHome() {
 }
 async function login() {
   if (username.value && passwordText.value) {
-    loginUser(username.value, sha256(passwordText.value))
+    await loginUser(username.value, sha256(passwordText.value))
       .then((res) => {
         const firstLogin = localStorage.getItem("isFirstLogin");
         if (firstLogin === "true") {
           router.push("/change-password");
         } else {
-          router.push("/");
+          window.location.replace("/");
         }
       })
       .catch((error) => {
