@@ -112,3 +112,9 @@ export async function forgotPassword(username) {
   );
   return response;
 }
+
+export async function getAllDoctors() {
+  const response = await fetch(`${API_URL}/allDoctors`);
+  const json = response.json();
+  return json;
+}

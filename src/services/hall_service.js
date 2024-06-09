@@ -52,3 +52,19 @@ export async function getHospitalHall(hallId) {
   const json = await response.json();
   return json;
 }
+
+export async function getHospitalHallByDoctor(doctorUsername) {
+  const response = await fetch(
+    `${API_URL}/getDoctorByHall?doctorUsername=${doctorUsername}`
+  );
+  const json = await response.json();
+  return json;
+}
+
+export async function getAppointmentsByHospitalHall(hallId) {
+  const response = await fetch(
+    `${API_URL}/getAppointmentsByHall?hallId=${hallId}`
+  );
+  const json = await response.json();
+  return json;
+}
