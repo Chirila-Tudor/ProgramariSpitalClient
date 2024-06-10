@@ -1,7 +1,7 @@
 const API_URL = "http://localhost:8080/hall";
 
 export async function createHall(hallRequestDTO) {
-  const response = await fetch(`${API_URL}/add-hall`, {
+  const response = await fetch(`${API_URL}/addHall`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -14,20 +14,20 @@ export async function createHall(hallRequestDTO) {
 }
 
 export async function getAllHalls() {
-  const response = await fetch(`${API_URL}/get-all-halls`);
+  const response = await fetch(`${API_URL}/getAllHalls`);
   const json = response.json();
   return json;
 }
 
 export async function deleteHall(hallId) {
-  return fetch(`${API_URL}/delete-hall?id=${hallId}`, {
+  return fetch(`${API_URL}/deleteHall?id=${hallId}`, {
     method: "DELETE",
   });
 }
 
 export async function updateHospitalHall(hallId, requestData) {
   try {
-    const response = await fetch(`${API_URL}/update-hall?hallId=${hallId}`, {
+    const response = await fetch(`${API_URL}/updateHall?hallId=${hallId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

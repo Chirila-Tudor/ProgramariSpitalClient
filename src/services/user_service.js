@@ -6,7 +6,7 @@ export async function getUserByUsername(username) {
   return json;
 }
 export async function changePassword(changePasswordDTO) {
-  const response = await fetch(`${API_URL}/change-password`, {
+  const response = await fetch(`${API_URL}/changePassword`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(changePasswordDTO),
@@ -69,21 +69,19 @@ export async function loginUser(username, hashPassword) {
 
 export async function isFirstLogin(username) {
   await sleepNow(500);
-  const response = await fetch(
-    `${API_URL}/is-first-login?username=${username}`
-  );
+  const response = await fetch(`${API_URL}/isFirstLogin?username=${username}`);
   const json = response.json();
   return json;
 }
 
 export async function getAllUsers() {
-  const response = await fetch(`${API_URL}/get-all-users`);
+  const response = await fetch(`${API_URL}/getAllUsers`);
   const json = response.json();
   return json;
 }
 
 export async function modifyIsActive(id) {
-  const response = await fetch(`${API_URL}/modify-user-activity?id=${id}`, {
+  const response = await fetch(`${API_URL}/modifyUserActivity?id=${id}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
   });
@@ -92,7 +90,7 @@ export async function modifyIsActive(id) {
 
 export async function requestNewPassword(username, securityCode) {
   const response = await fetch(
-    `${API_URL}/request-password?username=${username}`,
+    `${API_URL}/requestPassword?username=${username}`,
     {
       method: "POST",
       body: securityCode,
@@ -104,7 +102,7 @@ export async function requestNewPassword(username, securityCode) {
 export async function forgotPassword(username) {
   console.log(username);
   const response = await fetch(
-    `${API_URL}/forgot-password?username=${username}`,
+    `${API_URL}/forgotPassword?username=${username}`,
     {
       method: "PUT",
       headers: { "Content-Type": "application/json" },

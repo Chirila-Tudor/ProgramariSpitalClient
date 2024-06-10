@@ -2,7 +2,7 @@ const API_URL = "http://localhost:8080/appointment";
 
 export async function createAppointment(appointmentRequestDTO, username) {
   const response = await fetch(
-    `${API_URL}/create-appointment?username=${username}`,
+    `${API_URL}/createAppointment?username=${username}`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -24,7 +24,7 @@ export async function createAppointment(appointmentRequestDTO, username) {
 }
 
 export async function updateAppointment(id, appointmentUpdateDTO) {
-  const response = await fetch(`${API_URL}/update-appointment?id=${id}`, {
+  const response = await fetch(`${API_URL}/updateAppointment?id=${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -43,12 +43,12 @@ export async function getAppointment(id) {
 }
 
 export async function getAllAppointments() {
-  const response = await fetch(`${API_URL}/get-all-appointments`);
+  const response = await fetch(`${API_URL}/getAllAppointments`);
   const json = response.json();
   return json;
 }
 export async function getAllFutureAppointments() {
-  const response = await fetch(`${API_URL}/future-appointments`);
+  const response = await fetch(`${API_URL}/getFutureAppointments`);
   const json = response.json();
   return json;
 }
@@ -56,6 +56,25 @@ export async function getAppointmentsByScheduledPerson(username) {
   const response = await fetch(
     `${API_URL}/getAppointmentForUser?username=${username}`
   );
+  const json = await response.json();
+  return json;
+}
+
+export async function getAppointmentsForDoctor(username) {
+  const response = await fetch(
+    `${API_URL}/getAllAppointmentsByDoctor?username=${username}`
+  );
+  const json = await response.json();
+  return json;
+}
+
+export async function getAvailableTimes(chooseDate, service, doctorUsername) {
+  const response = await fetch(
+    `${API_URL}/getAvailableTimes?chooseDate=${chooseDate}&service=${service}&doctorUsername=${doctorUsername}`
+  );
+  if (!response.ok) {
+    throw new Error("Failed to fetch available times");
+  }
   const json = await response.json();
   return json;
 }

@@ -1,38 +1,31 @@
 <script setup>
-import { onMounted, ref } from "vue";
-import {
-  getHospitalHallByDoctor,
-  getAppointmentsByHospitalHall,
-} from "../services/hall_service";
+import { onMounted, ref, watch } from "vue";
+import { getAppointmentsForDoctor } from "../services/appointment_service";
 import CustomButton from "../components/CustomButton.vue";
 import router from "../router";
 
 const appointments = ref([]);
+const filteredAppointments = ref([]);
+const selectedDate = ref(new Date().toISOString().split("T")[0]);
 
 onMounted(async () => {
   const doctorUsername = localStorage.getItem("username");
   if (doctorUsername) {
-    const hallId = await fetchHospitalHallIdByDoctor(doctorUsername);
-    if (hallId) {
-      fetchAppointmentsByHospitalHall(hallId);
-    }
+    const fetchedAppointments = await getAppointmentsForDoctor(doctorUsername);
+    appointments.value = fetchedAppointments;
   }
 });
 
-async function fetchHospitalHallIdByDoctor(doctorUsername) {
-  const response = await getHospitalHallByDoctor(doctorUsername);
-  if (response && response.id) {
-    return response.id;
+watch(selectedDate, (newDate) => {
+  if (newDate) {
+    filteredAppointments.value = appointments.value.filter(
+      (appointment) => appointment.chooseDate === newDate
+    );
   } else {
-    return null;
+    filteredAppointments.value = appointments.value;
   }
-}
+});
 
-async function fetchAppointmentsByHospitalHall(hallId) {
-  await getAppointmentsByHospitalHall(hallId).then(
-    (res) => (appointments.value = res)
-  );
-}
 function editAppointment(id) {
   router.push({ name: "edit-appointment", params: { id: id } });
 }
@@ -40,10 +33,14 @@ function editAppointment(id) {
 
 <template>
   <div class="appointments-page">
-    <h1>Programarile tale</h1>
-    <div v-if="appointments.length" class="appointments-grid">
+    <h1>Your Appointments</h1>
+    <div class="date-picker">
+      <label for="date">Select Date: </label>
+      <input type="date" id="date" v-model="selectedDate" class="date-input" />
+    </div>
+    <div v-if="filteredAppointments.length" class="appointments-grid">
       <div
-        v-for="appointment in appointments"
+        v-for="appointment in filteredAppointments"
         :key="appointment.id"
         class="appointment-card"
       >
@@ -59,6 +56,18 @@ function editAppointment(id) {
           <p>
             <strong>Appointment Hour:</strong> {{ appointment.appointmentHour }}
           </p>
+          <p>
+            <strong>Type of Services: </strong>
+            <span
+              v-for="(service, index) in appointment.typeOfServices"
+              :key="index"
+            >
+              {{ service.service
+              }}<span v-if="index < appointment.typeOfServices.length - 1"
+                >,
+              </span>
+            </span>
+          </p>
           <CustomButton
             id="edit-button"
             :isActive="true"
@@ -72,8 +81,8 @@ function editAppointment(id) {
         </div>
       </div>
     </div>
-    <div v-else>
-      <p>No appointments available for your hospital hall.</p>
+    <div v-else class="no-appointments-message">
+      <p>Take a deep breath, you are free today!</p>
     </div>
   </div>
 </template>
@@ -81,6 +90,18 @@ function editAppointment(id) {
 <style scoped>
 .appointments-page {
   padding: 20px;
+}
+
+.date-picker {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.date-input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
 }
 
 h1 {
@@ -104,7 +125,14 @@ h1 {
 .appointment-details p {
   margin: 5px 0;
 }
+
 .white-text {
   color: white;
+}
+.no-appointments-message {
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #000000;
 }
 </style>
