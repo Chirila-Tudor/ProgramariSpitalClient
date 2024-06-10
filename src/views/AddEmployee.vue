@@ -86,7 +86,7 @@ watch(role, (newValue) => {
   <div class="container">
     <div class="form-container">
       <div class="title">
-        <FormTitle label="Add Employee" class="title-width" />
+        <FormTitle label="Adăugare angajat" class="title-width" />
       </div>
       <div class="input-group">
         <label for="username-input">Username:</label>
@@ -101,7 +101,7 @@ watch(role, (newValue) => {
         />
       </div>
       <div class="input-group">
-        <label for="role-input">Role:</label>
+        <label for="role-input">Rol:</label>
         <div v-if="errors.role" class="error-message">
           {{ errors.role }}
         </div>
@@ -125,8 +125,12 @@ watch(role, (newValue) => {
         />
       </div>
       <div class="button-group">
-        <CustomButton id="add-employee" @click="addEmployee" class="white-text"
-          >Add Employee</CustomButton
+        <CustomButton
+          id="add-employee"
+          @click="addEmployee"
+          class="white-text"
+          :widthInPx="150"
+          >Adăugare angajat</CustomButton
         >
       </div>
     </div>
@@ -183,7 +187,7 @@ watch(role, (newValue) => {
   color: white;
 }
 .title-width {
-  width: 30vh;
+  width: 40vh;
   margin-top: 15px;
 }
 .error-message {

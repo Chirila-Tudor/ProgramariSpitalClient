@@ -33,9 +33,9 @@ function editAppointment(id) {
 
 <template>
   <div class="appointments-page">
-    <h1>Your Appointments</h1>
+    <h1>Programările tale</h1>
     <div class="date-picker">
-      <label for="date">Select Date: </label>
+      <label for="date">Selectează data: </label>
       <input type="date" id="date" v-model="selectedDate" class="date-input" />
     </div>
     <div v-if="filteredAppointments.length" class="appointments-grid">
@@ -46,18 +46,18 @@ function editAppointment(id) {
       >
         <div class="appointment-details">
           <p>
-            <strong>Scheduled Person:</strong>
+            <strong>Pacient:</strong>
             {{ appointment.firstName + " " + appointment.lastName }}
           </p>
           <p>
-            <strong>Date of Appointment:</strong>
+            <strong>Data programării:</strong>
             {{ appointment.chooseDate }}
           </p>
           <p>
-            <strong>Appointment Hour:</strong> {{ appointment.appointmentHour }}
+            <strong>Ora programării:</strong> {{ appointment.appointmentHour }}
           </p>
           <p>
-            <strong>Type of Services: </strong>
+            <strong>Serviciu: </strong>
             <span
               v-for="(service, index) in appointment.typeOfServices"
               :key="index"
@@ -82,7 +82,7 @@ function editAppointment(id) {
       </div>
     </div>
     <div v-else class="no-appointments-message">
-      <p>Take a deep breath, you are free today!</p>
+      <p>Ești liber astăzi!</p>
     </div>
   </div>
 </template>

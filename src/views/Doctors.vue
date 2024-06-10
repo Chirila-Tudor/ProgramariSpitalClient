@@ -78,7 +78,7 @@ const doctors = [
 
 <template>
   <div class="doctors-page">
-    <h1>Meet Our Doctors</h1>
+    <h1>Cunoaște-ne doctorii</h1>
     <div class="doctors-list">
       <div v-for="doctor in doctors" :key="doctor.id" class="doctor">
         <div class="photo-container">

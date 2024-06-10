@@ -16,7 +16,7 @@ async function fetchRequestPassword() {
 <template>
   <div class="forgot-password-container">
     <div class="forgot-password-card">
-      <h1>Request New Password</h1>
+      <h1>Verificare cod securitate</h1>
       <div class="input-group">
         <div class="input-wrapper">
           <label for="username" class="input-label">Username:</label>
@@ -29,7 +29,7 @@ async function fetchRequestPassword() {
           />
         </div>
         <div class="input-wrapper">
-          <label for="security" class="input-label">Security Code:</label>
+          <label for="security" class="input-label">Cod securitate:</label>
           <CustomInput
             type="text"
             id="security"
@@ -43,7 +43,7 @@ async function fetchRequestPassword() {
         type="submit"
         class="submit-button white-text"
         @click="fetchRequestPassword"
-        >Request New Password</CustomButton
+        >Trimitere nouă parolă</CustomButton
       >
     </div>
   </div>

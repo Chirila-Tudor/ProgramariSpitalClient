@@ -27,7 +27,7 @@ const toggleActive = (id) => {
 
 <template>
   <div class="appointments-page">
-    <h1>All Users</h1>
+    <h1>Toți utilizatorii</h1>
     <div v-if="applicationUser.length" class="appointments-grid">
       <div
         v-for="user in applicationUser"
@@ -36,12 +36,12 @@ const toggleActive = (id) => {
       >
         <div class="appointment-details">
           <p><strong>Username:</strong> {{ user.username }}</p>
-          <p><strong>Role:</strong> {{ user.role }}</p>
+          <p><strong>Rol:</strong> {{ user.role }}</p>
         </div>
         <div class="status-and-button">
           <div class="status">
             <p>
-              <strong>isActive:</strong>
+              <strong>Activ:</strong>
               <strong
                 :class="{ active: user.isActive, inactive: !user.isActive }"
                 >{{ user.isActive ? " Active" : " Inactive" }}</strong
@@ -53,14 +53,14 @@ const toggleActive = (id) => {
               id="change"
               @click="() => toggleActive(user.id)"
               class="text_white"
-              >Change</CustomButton
+              >Modifică</CustomButton
             >
           </div>
         </div>
       </div>
     </div>
     <div v-else>
-      <p>No users available.</p>
+      <p>Nu există utilizatori.</p>
     </div>
   </div>
 </template>

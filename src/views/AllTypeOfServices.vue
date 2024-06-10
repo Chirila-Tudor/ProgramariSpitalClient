@@ -16,20 +16,20 @@ async function fetchAllServices() {
 
 <template>
   <div class="services-page">
-    <h1 class="title-center">All Types of Services</h1>
+    <h1 class="title-center">Toate serviciile</h1>
     <div v-if="services.length" class="services-grid">
       <div v-for="service in services" :key="service.id" class="service-card">
         <div class="service-details">
-          <p><strong>Service Name:</strong> {{ service.service }}</p>
+          <p><strong>Nume serviciu:</strong> {{ service.service }}</p>
           <p>
-            <strong>Doctors:</strong>
+            <strong>Doctori:</strong>
             {{ service.doctorsWhoCanPerformService.join(", ") }}
           </p>
         </div>
       </div>
     </div>
     <div v-else>
-      <p>No services available.</p>
+      <p>Nu exista servicii!</p>
     </div>
   </div>
 </template>

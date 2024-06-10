@@ -211,4 +211,8 @@ button {
 button:hover {
   background-color: #0056b3;
 }
+.title-width {
+  width: 30vh;
+  margin-top: 15px;
+}
 </style>
