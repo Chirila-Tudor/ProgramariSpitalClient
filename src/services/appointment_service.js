@@ -68,12 +68,27 @@ export async function getAppointmentsForDoctor(username) {
   return json;
 }
 
-export async function getAvailableTimes(chooseDate, service, doctorUsername) {
+export async function getAvailableTimes(chooseDate, idService, doctorUsername) {
   const response = await fetch(
-    `${API_URL}/getAvailableTimes?chooseDate=${chooseDate}&service=${service}&doctorUsername=${doctorUsername}`
+    `${API_URL}/getAvailableTimes?chooseDate=${chooseDate}&idService=${idService}&doctorUsername=${doctorUsername}`
   );
   if (!response.ok) {
     throw new Error("Failed to fetch available times");
+  }
+  const json = await response.json();
+  return json;
+}
+
+export async function getDoctorDateAvailability(
+  chooseDate,
+  idService,
+  doctorUsername
+) {
+  const response = await fetch(
+    `${API_URL}/getDateAvailability?chooseDate=${chooseDate}&idService=${idService}&doctorUsername=${doctorUsername}`
+  );
+  if (!response.ok) {
+    throw new Error("Failed to fetch doctor date availability");
   }
   const json = await response.json();
   return json;

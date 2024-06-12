@@ -19,6 +19,7 @@ const appointment = ref({
   chooseDate: "",
   periodOfAppointment: "",
   typeOfServices: "",
+  idService: "",
 });
 
 const availableTimes = ref([]);
@@ -32,8 +33,10 @@ onMounted(async () => {
     fetchedAppointment.periodOfAppointment;
   appointment.value.typeOfServices =
     fetchedAppointment.typeOfServices[0].service;
+  appointment.value.idService = fetchedAppointment.typeOfServices[0].idService;
+  console.log(appointment.value.idService);
 
-  if (appointment.value.chooseDate && appointment.value.typeOfServices) {
+  if (appointment.value.chooseDate && appointment.value.idService) {
     await fetchAvailableTimes();
   }
 });
@@ -41,7 +44,7 @@ onMounted(async () => {
 watch(
   () => appointment.value.chooseDate,
   async (newDate) => {
-    if (newDate && appointment.value.typeOfServices) {
+    if (newDate && appointment.value.idService) {
       await fetchAvailableTimes();
     }
   }
@@ -51,7 +54,7 @@ async function fetchAvailableTimes() {
   try {
     availableTimes.value = await getAvailableTimes(
       appointment.value.chooseDate,
-      appointment.value.typeOfServices,
+      appointment.value.idService,
       doctorUsername
     );
   } catch (error) {
@@ -68,6 +71,7 @@ async function handleUpdate() {
     router.push({ name: "all-appointments" });
   }
 }
+
 function handleCancel() {
   router.go(-1);
 }
