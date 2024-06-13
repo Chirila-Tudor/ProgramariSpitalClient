@@ -44,16 +44,6 @@ function editAppointment(id) {
           <p>
             <strong>Ora programării:</strong> {{ appointment.appointmentHour }}
           </p>
-          <CustomButton
-            id="edit-button"
-            :isActive="true"
-            :heightInPx="30"
-            :widthInPx="70"
-            class="white-text edit-color"
-            @click="editAppointment(appointment.id)"
-          >
-            Edit
-          </CustomButton>
         </div>
       </div>
     </div>

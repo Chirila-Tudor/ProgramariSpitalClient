@@ -34,7 +34,7 @@ onMounted(async () => {
   appointment.value.typeOfServices =
     fetchedAppointment.typeOfServices[0].service;
   appointment.value.idService = fetchedAppointment.typeOfServices[0].idService;
-  console.log(appointment.value.idService);
+  console.log(appointment.value.id);
 
   if (appointment.value.chooseDate && appointment.value.idService) {
     await fetchAvailableTimes();
@@ -67,8 +67,6 @@ async function handleUpdate() {
   const role = localStorage.getItem("role");
   if (role === "DOCTOR") {
     router.push({ name: "all-appointments-doctor" });
-  } else if (role === "ADMIN") {
-    router.push({ name: "all-appointments" });
   }
 }
 
