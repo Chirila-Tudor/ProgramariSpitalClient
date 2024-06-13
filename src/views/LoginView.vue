@@ -79,7 +79,7 @@ function handlePasswordTextChanged(password) {
       </div>
       <div id="password-input">
         <PasswordInput
-          :label="'Password'"
+          :label="'Parolă'"
           :value="passwordText"
           @password-changed="handlePasswordTextChanged"
           @enter-password="login"

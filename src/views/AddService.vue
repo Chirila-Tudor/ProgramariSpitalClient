@@ -82,10 +82,10 @@ watch(
   <div class="container">
     <div class="form-container">
       <div class="title">
-        <FormTitle label="Add Service" class="title-width" />
+        <FormTitle label="Adăugare serviciu" class="title-width" />
       </div>
       <div class="input-group">
-        <label for="service-name-input">Service Name:</label>
+        <label for="service-name-input">Numele serviciului:</label>
         <div v-if="errors.serviceName" class="error-message">
           {{ errors.serviceName }}
         </div>
@@ -96,7 +96,7 @@ watch(
         />
       </div>
       <div class="input-group">
-        <label>Doctor Usernames:</label>
+        <label>Username doctori:</label>
         <div v-if="errors.selectedDoctors" class="error-message">
           {{ errors.selectedDoctors }}
         </div>
@@ -124,8 +124,9 @@ watch(
           id="add-service"
           @click="addServiceHandler"
           class="white-text"
+          :widthInPx="150"
         >
-          Add Service
+          Adăugare serviciu
         </CustomButton>
       </div>
     </div>
@@ -210,6 +211,12 @@ input[type="checkbox"]:focus + .doctor-label {
 
 input[type="checkbox"]:checked + .doctor-label {
   background-color: rgb(180, 6, 6);
+  color: white;
+}
+.title-width {
+  width: 40vh;
+}
+.white-text {
   color: white;
 }
 </style>

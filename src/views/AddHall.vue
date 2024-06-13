@@ -19,9 +19,6 @@ const errors = ref({
   equipmentList: "",
 });
 
-function redirectToHome() {
-  router.push("/");
-}
 function redirectToAllHalls() {
   router.push("/all-halls");
 }
@@ -132,10 +129,10 @@ watch(
   <div class="container">
     <div class="form-container">
       <div class="title">
-        <FormTitle label="Add Hospital Hall" class="title-width" />
+        <FormTitle label="Adăugare sală" class="title-width" />
       </div>
       <div class="input-group">
-        <label for="room-name-input">Room Name:</label>
+        <label for="room-name-input">Numele camerei:</label>
         <div v-if="errors.roomName" class="error-message">
           {{ errors.roomName }}
         </div>
@@ -147,7 +144,7 @@ watch(
         />
       </div>
       <div class="input-group">
-        <label for="doctor-name-input">Doctor Name:</label>
+        <label for="doctor-name-input">Numele doctorului:</label>
         <div v-if="errors.doctorName" class="error-message">
           {{ errors.doctorName }}
         </div>
@@ -159,7 +156,7 @@ watch(
         />
       </div>
       <div class="input-group">
-        <label for="equipment-input">Equipments:</label>
+        <label for="equipment-input">Echipamente:</label>
         <div v-if="errors.equipmentList" class="error-message">
           {{ errors.equipmentList }}
         </div>
@@ -188,7 +185,7 @@ watch(
           id="add-hospital-hall"
           @click="addHospitalHall"
           class="white-text"
-          >Add Hospital Hall</CustomButton
+          >Adăugare sală</CustomButton
         >
       </div>
     </div>

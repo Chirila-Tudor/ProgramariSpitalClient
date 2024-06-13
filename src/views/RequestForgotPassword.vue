@@ -15,7 +15,7 @@ async function fetchForgotPassword() {
 <template>
   <div class="forgot-password-container">
     <div class="forgot-password-card">
-      <h1>Request New Password</h1>
+      <h1>Cerere de parolă nouă</h1>
       <div class="input-group">
         <label for="username" class="input-label">Username:</label>
         <input
@@ -31,7 +31,7 @@ async function fetchForgotPassword() {
         class="submit-button white-text"
         :widthInPx="150"
         @click="fetchForgotPassword"
-        >Request New Password</CustomButton
+        >Submit</CustomButton
       >
     </div>
   </div>

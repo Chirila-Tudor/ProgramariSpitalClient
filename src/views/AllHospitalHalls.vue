@@ -41,14 +41,14 @@ function editHall(hallId) {
 
 <template>
   <div class="halls-page">
-    <h1 class="title-center">All Hospital Halls</h1>
+    <h1 class="title-center">Toate sălile</h1>
     <div v-if="halls.length" class="halls-grid">
       <div v-for="hall in halls" :key="hall.id" class="hall-card">
         <div class="hall-details">
-          <p><strong>Room Name:</strong> {{ hall.room }}</p>
-          <p><strong>Doctor:</strong> {{ hall.doctorUsername }}</p>
+          <p><strong>Numele camerei:</strong> {{ hall.room }}</p>
+          <p><strong>Dcotorul:</strong> {{ hall.doctorUsername }}</p>
           <p>
-            <strong>Equipments:</strong>
+            <strong>Echipamente:</strong>
             {{ hall.equipment.map((equipment) => equipment.name).join(", ") }}
           </p>
         </div>
@@ -71,13 +71,13 @@ function editHall(hallId) {
             class="white-text"
             @click="showDeleteModal(hall.id)"
           >
-            Delete
+            Ștergere
           </CustomButton>
         </div>
       </div>
     </div>
     <div v-else>
-      <p>No halls available.</p>
+      <p>Nu există camere!</p>
     </div>
     <ModalCustom
       v-if="showModal"

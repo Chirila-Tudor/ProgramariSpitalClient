@@ -1,9 +1,10 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import {
   getAppointment,
   updateAppointment,
+  getAvailableTimes,
 } from "../services/appointment_service";
 import FormTitle from "../components/FormTitle.vue";
 import CustomButton from "../components/CustomButton.vue";
@@ -17,7 +18,12 @@ const appointment = ref({
   appointmentHour: "",
   chooseDate: "",
   periodOfAppointment: "",
+  typeOfServices: "",
+  idService: "",
 });
+
+const availableTimes = ref([]);
+const doctorUsername = localStorage.getItem("username");
 
 onMounted(async () => {
   const fetchedAppointment = await getAppointment(id);
@@ -25,7 +31,36 @@ onMounted(async () => {
   appointment.value.chooseDate = fetchedAppointment.chooseDate;
   appointment.value.periodOfAppointment =
     fetchedAppointment.periodOfAppointment;
+  appointment.value.typeOfServices =
+    fetchedAppointment.typeOfServices[0].service;
+  appointment.value.idService = fetchedAppointment.typeOfServices[0].idService;
+  console.log(appointment.value.idService);
+
+  if (appointment.value.chooseDate && appointment.value.idService) {
+    await fetchAvailableTimes();
+  }
 });
+
+watch(
+  () => appointment.value.chooseDate,
+  async (newDate) => {
+    if (newDate && appointment.value.idService) {
+      await fetchAvailableTimes();
+    }
+  }
+);
+
+async function fetchAvailableTimes() {
+  try {
+    availableTimes.value = await getAvailableTimes(
+      appointment.value.chooseDate,
+      appointment.value.idService,
+      doctorUsername
+    );
+  } catch (error) {
+    console.log("Failed to fetch available times");
+  }
+}
 
 async function handleUpdate() {
   await updateAppointment(id, appointment.value);
@@ -36,6 +71,10 @@ async function handleUpdate() {
     router.push({ name: "all-appointments" });
   }
 }
+
+function handleCancel() {
+  router.go(-1);
+}
 </script>
 
 <template>
@@ -44,44 +83,49 @@ async function handleUpdate() {
       <div class="title">
         <FormTitle label="Edit Appointment" class="title-width" />
       </div>
-      <form @submit.prevent="handleUpdate" class="form-content">
-        <div class="form-group">
-          <label for="appointmentHour">Appointment Hour:</label>
-          <CustomInput
-            type="time"
-            id="appointmentHour"
-            placeholder="Appointment Hour"
-            v-model:model-value="appointment.appointmentHour"
-          />
-        </div>
-        <div class="form-group">
-          <label for="chooseDate">Choose Date:</label>
-          <CustomInput
-            type="date"
-            id="chooseDate"
-            placeholder="Choose Date"
-            v-model:model-value="appointment.chooseDate"
-          />
-        </div>
-        <div class="form-group">
-          <label for="periodOfAppointment">Period of Appointment:</label>
-          <CustomInput
-            type="text"
-            id="periodOfAppointment"
-            placeholder="Period of Appointment"
-            v-model:model-value="appointment.periodOfAppointment"
-          />
-        </div>
-        <div class="button-group">
-          <CustomButton
-            id="update-appointment"
-            @click="handleUpdate"
-            class="white-text"
-          >
-            Update Appointment
-          </CustomButton>
-        </div>
-      </form>
+      <div class="input-group">
+        <label for="chooseDate">Choose Date:</label>
+        <CustomInput
+          type="date"
+          id="chooseDate"
+          placeholder="Choose Date"
+          v-model:model-value="appointment.chooseDate"
+        />
+      </div>
+      <div class="input-group">
+        <label for="appointmentHour">Appointment Hour:</label>
+        <select id="appointmentHour" v-model="appointment.appointmentHour">
+          <option v-for="time in availableTimes" :key="time" :value="time">
+            {{ time }}
+          </option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label for="periodOfAppointment">Period of Appointment:</label>
+        <CustomInput
+          type="text"
+          id="periodOfAppointment"
+          placeholder="Period of Appointment"
+          v-model:model-value="appointment.periodOfAppointment"
+        />
+      </div>
+      <div class="button-group">
+        <CustomButton
+          id="update-appointment"
+          @click="handleUpdate"
+          class="white-text"
+          :widthInPx="200"
+        >
+          Update Appointment
+        </CustomButton>
+        <CustomButton
+          id="cancel-update"
+          @click="handleCancel"
+          class="white-text"
+        >
+          Cancel
+        </CustomButton>
+      </div>
     </div>
   </div>
 </template>
@@ -91,7 +135,7 @@ async function handleUpdate() {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 90vh;
 }
 
 .form-container {
@@ -99,12 +143,15 @@ async function handleUpdate() {
   border: 1px solid #ccc;
   border-radius: 10px;
   background-color: #f9f9f9;
-  width: 40vh;
+  width: 50vh;
+  height: 55vh;
 }
 
 .title {
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 40vh;
   gap: 10px;
   padding-bottom: 30px;
 }
@@ -117,11 +164,11 @@ async function handleUpdate() {
 
 .button-group {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   text-align: center;
 }
 
-.form-group {
+.input-group {
   margin-bottom: 20px;
 }
 
@@ -131,16 +178,45 @@ label {
   font-weight: bold;
 }
 
-.form-content {
+input[type="date"],
+select,
+input[type="text"],
+input[type="time"] {
   width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
 }
 
-.white-text {
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath d='M10 15l6 6V9z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position-x: calc(100% - 10px);
+  background-position-y: center;
+  background-size: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
   color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
 }
 
+button:hover {
+  background-color: #0056b3;
+}
 .title-width {
   width: 30vh;
-  margin-left: 5vh;
+  margin-top: 15px;
 }
 </style>

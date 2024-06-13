@@ -20,7 +20,7 @@ function editAppointment(id) {
 
 <template>
   <div class="appointments-page">
-    <h1>All Appointments</h1>
+    <h1>Toate programările</h1>
     <div v-if="appointments.length" class="appointments-grid">
       <div
         v-for="appointment in appointments"
@@ -29,14 +29,12 @@ function editAppointment(id) {
       >
         <div class="appointment-details">
           <p>
-            <strong>Scheduled Person:</strong>
+            <strong>Pacient:</strong>
             {{ appointment.firstName + " " + appointment.lastName }}
           </p>
+          <p><strong>Data programării:</strong> {{ appointment.chooseDate }}</p>
           <p>
-            <strong>Date of Appointment:</strong> {{ appointment.chooseDate }}
-          </p>
-          <p>
-            <strong>Type of Service:</strong>
+            <strong>Serviciu:</strong>
             {{
               appointment.typeOfServices
                 .map((service) => service.service)
@@ -44,7 +42,7 @@ function editAppointment(id) {
             }}
           </p>
           <p>
-            <strong>Appointment Hour:</strong> {{ appointment.appointmentHour }}
+            <strong>Ora programării:</strong> {{ appointment.appointmentHour }}
           </p>
           <CustomButton
             id="edit-button"

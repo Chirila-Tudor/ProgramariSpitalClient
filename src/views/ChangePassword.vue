@@ -98,7 +98,7 @@ function checkPassword() {
   <div class="container">
     <div class="loginContainer">
       <div class="title">
-        <FormTitle label="Change Password" class="title-width" />
+        <FormTitle label="Schimbare parolă" class="title-width" />
       </div>
       <InvalidInputMessage
         :message="errorMessage"
@@ -106,7 +106,7 @@ function checkPassword() {
       />
       <div id="password-input">
         <PasswordInput
-          :label="'Old Password'"
+          :label="'Vechea parolă'"
           :value="oldPassword"
           :widthInPx="300"
           @password-changed="handleOldPasswordTextChanged"
@@ -115,7 +115,7 @@ function checkPassword() {
       </div>
       <div id="password-input">
         <PasswordInput
-          :label="'New Password'"
+          :label="'Noua parolă'"
           :value="newPassword"
           :widthInPx="300"
           @password-changed="handleNewPasswordTextChanged"
@@ -124,7 +124,7 @@ function checkPassword() {
       </div>
       <div id="password-input">
         <PasswordInput
-          :label="'Confirm New Password'"
+          :label="'Confirmare noua parolă'"
           :value="confirmNewPassword"
           :widthInPx="300"
           @password-changed="handleConfirmPasswordTextChanged"
@@ -133,7 +133,7 @@ function checkPassword() {
       </div>
       <div>
         <CustomButton id="sign-in" @click="submit" class="white-text"
-          >Submit</CustomButton
+          >Schimbă parola</CustomButton
         >
       </div>
     </div>

@@ -67,10 +67,10 @@ function deleteEquipment(index) {
   <div class="container">
     <div class="form-container">
       <div class="title">
-        <FormTitle label="Edit Hospital Hall" class="title-width" />
+        <FormTitle label="Modificare cameră" class="title-width" />
       </div>
       <div class="input-group">
-        <label for="room-name-input">Room Name:</label>
+        <label for="room-name-input">Nume cameră:</label>
         <CustomInput
           type="text"
           id="room-name-input"
@@ -79,7 +79,7 @@ function deleteEquipment(index) {
         />
       </div>
       <div class="input-group">
-        <label for="doctor-name-input">Doctor Name:</label>
+        <label for="doctor-name-input">Nume doctor:</label>
         <CustomInput
           type="text"
           id="doctor-name-input"
@@ -88,7 +88,7 @@ function deleteEquipment(index) {
         />
       </div>
       <div class="input-group">
-        <label for="equipment-input">Equipments:</label>
+        <label for="equipment-input">Echipamente:</label>
         <CustomInput
           type="text"
           id="equipment-input"
@@ -115,7 +115,7 @@ function deleteEquipment(index) {
           @click="updateHospitalHalls"
           class="white-text"
         >
-          Update Hall
+          Modificare cameră
         </CustomButton>
       </div>
     </div>

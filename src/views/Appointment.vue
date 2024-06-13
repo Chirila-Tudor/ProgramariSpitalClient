@@ -1,11 +1,19 @@
 <script setup>
 import router from "../router";
 import { useRoute } from "vue-router";
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 import FormTitle from "../components/FormTitle.vue";
 import CustomInput from "../components/CustomInput.vue";
 import CustomButton from "../components/CustomButton.vue";
-import { createAppointment } from "../services/appointment_service";
+import {
+  createAppointment,
+  getDoctorDateAvailability,
+  getAvailableTimes,
+} from "../services/appointment_service";
+import {
+  getDoctorsByTypeOfService,
+  getAllServices,
+} from "../services/typeOfWork_service";
 
 const route = useRoute();
 const scheduledPerson = ref("");
@@ -19,8 +27,7 @@ const appointmentHour = ref("");
 const period = ref("");
 const hall = ref("");
 const serviceOptions = ref([]);
-const newServiceOption = ref();
-
+const newServiceOption = ref("");
 const errors = ref({
   scheduledPerson: "",
   email: "",
@@ -34,6 +41,64 @@ const errors = ref({
   hall: "",
   serviceOptions: "",
 });
+const services = ref([]);
+const doctors = ref([]);
+const availabilityMessage = ref("");
+const availableTimes = ref([]);
+const selectedService = ref("");
+const selectedDoctor = ref("");
+const selectedTime = ref("");
+
+onMounted(async () => {
+  try {
+    services.value = await getAllServices();
+    console.log(services.value);
+  } catch (error) {
+    console.error("Error fetching services:", error);
+  }
+});
+
+async function fetchDoctors() {
+  console.log("Selected service:", selectedService.value);
+  try {
+    const doctorsData = await getDoctorsByTypeOfService(selectedService.value);
+    doctors.value = doctorsData;
+  } catch (error) {
+    console.error("Error fetching doctors:", error);
+  }
+}
+
+async function checkDateAvailability() {
+  try {
+    const response = await getDoctorDateAvailability(
+      appointmentDate.value,
+      selectedService.value,
+      selectedDoctor.value
+    );
+    if (response.isAvailable) {
+      availabilityMessage.value = "Doctor is available on this date.";
+      fetchAvailableTimes();
+    } else {
+      availabilityMessage.value = "Doctor is not available on this date.";
+      availableTimes.value = [];
+    }
+  } catch (error) {
+    console.error("Error checking date availability:", error);
+  }
+}
+
+async function fetchAvailableTimes() {
+  try {
+    const response = await getAvailableTimes(
+      appointmentDate.value,
+      selectedService.value,
+      selectedDoctor.value
+    );
+    availableTimes.value = response;
+  } catch (error) {
+    console.error("Error fetching available times:", error);
+  }
+}
 
 function redirectToHome() {
   router.push("/");
@@ -43,6 +108,7 @@ function redirectToAllAppointments() {
 }
 
 async function scheduleAppointment() {
+  console.log("Scheduling appointment...");
   for (const key in errors.value) {
     errors.value[key] = "";
   }
@@ -88,10 +154,6 @@ async function scheduleAppointment() {
     errors.value.hall = "Hall is required";
     valid = false;
   }
-  if (serviceOptions.value.length === 0) {
-    errors.value.serviceOptions = "At least one service option is required";
-    valid = false;
-  }
 
   if (!valid) {
     return;
@@ -131,22 +193,6 @@ async function scheduleAppointment() {
   } catch (error) {
     console.error("Error scheduling appointment:", error);
   }
-}
-
-function addServiceOption() {
-  if (
-    newServiceOption.value.trim() !== "" &&
-    !serviceOptions.value.some(
-      (option) => option.service === newServiceOption.value
-    )
-  ) {
-    serviceOptions.value.push({ service: newServiceOption.value });
-    newServiceOption.value = "";
-  }
-}
-
-function deleteServiceOption(index) {
-  serviceOptions.value.splice(index, 1);
 }
 
 watch(scheduledPerson, (newValue) => {
@@ -219,17 +265,6 @@ watch(hall, (newValue) => {
     errors.value.hall = "Hall is required";
   }
 });
-watch(
-  serviceOptions,
-  () => {
-    if (errors.value.serviceOptions && serviceOptions.value.length > 0) {
-      errors.value.serviceOptions = "";
-    } else if (serviceOptions.value.length === 0) {
-      errors.value.serviceOptions = "At least one service option is required";
-    }
-  },
-  { deep: true }
-);
 </script>
 
 <template>
@@ -316,42 +351,6 @@ watch(
         />
       </div>
       <div class="input-group">
-        <label for="appointment-date-input">Choose Date of Appointment:</label>
-        <div v-if="errors.appointmentDate" class="error-message">
-          {{ errors.appointmentDate }}
-        </div>
-        <CustomInput
-          type="date"
-          id="appointment-date-input"
-          placeholder="Choose Date of Appointment"
-          v-model:model-value="appointmentDate"
-        />
-      </div>
-      <div class="input-group">
-        <label for="appointment-hour-input">Appointment Hour:</label>
-        <div v-if="errors.appointmentHour" class="error-message">
-          {{ errors.appointmentHour }}
-        </div>
-        <CustomInput
-          type="time"
-          id="appointment-hour-input"
-          placeholder="Appointment Hour"
-          v-model:model-value="appointmentHour"
-        />
-      </div>
-      <div class="input-group">
-        <label for="period-input">Period of Time:</label>
-        <div v-if="errors.period" class="error-message">
-          {{ errors.period }}
-        </div>
-        <CustomInput
-          type="text"
-          id="period-input"
-          placeholder="Period of Time"
-          v-model:model-value="period"
-        />
-      </div>
-      <div class="input-group">
         <label for="room-input">Hall:</label>
         <div v-if="errors.hall" class="error-message">{{ errors.hall }}</div>
         <CustomInput
@@ -366,24 +365,73 @@ watch(
         <div v-if="errors.serviceOptions" class="error-message">
           {{ errors.serviceOptions }}
         </div>
-        <CustomInput
-          type="text"
-          id="service-type-input"
-          placeholder="Type of Service"
-          v-model:model-value="newServiceOption"
-          @keydown.enter.prevent="addServiceOption"
-        />
-        <div class="service-options">
-          <div
-            v-for="(option, index) in serviceOptions"
-            :key="index"
-            class="service-option"
+        <div class="select-wrapper">
+          <select
+            id="service-type-input"
+            v-model="selectedService"
+            @change="fetchDoctors"
           >
-            <span>{{ option.service }}</span>
-            <button @click="deleteServiceOption(index)" class="delete-button">
-              Delete
-            </button>
+            <option value="" disabled>Select Service</option>
+            <option
+              v-for="service in services"
+              :value="service.id"
+              :key="service.id"
+            >
+              {{ service.service }}
+            </option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label for="doctor-select">Choose Doctor:</label>
+          <div v-if="errors.doctor" class="error-message">
+            {{ errors.doctor }}
           </div>
+          <div class="select-wrapper">
+            <select id="doctor-select" v-model="selectedDoctor">
+              <option value="" disabled>Select Doctor</option>
+              <option v-for="doctor in doctors" :value="doctor" :key="doctor">
+                {{ doctor }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="availability-section">
+        <label for="date-input">Choose Date of Appointment:</label>
+        <input
+          type="date"
+          id="date-input"
+          placeholder="Choose Date of Appointment"
+          v-model="appointmentDate"
+          @change="checkDateAvailability"
+        />
+        <div
+          v-if="!availabilityMessage && errors.appointmentDate"
+          class="error-message"
+        >
+          {{ errors.appointmentDate }}
+        </div>
+        <div v-if="availableTimes.length > 0">
+          <label for="time-select">Choose Appointment Time:</label>
+          <div class="select-wrapper">
+            <select id="time-select" v-model="selectedTime">
+              <option v-for="time in availableTimes" :value="time" :key="time">
+                {{ time }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="period-input">Period of Time:</label>
+          <div v-if="errors.period" class="error-message">
+            {{ errors.period }}
+          </div>
+          <CustomInput
+            type="text"
+            id="period-input"
+            placeholder="Period of Time"
+            v-model:model-value="period"
+          />
         </div>
       </div>
       <div class="button-group">
@@ -392,13 +440,13 @@ watch(
           :widthInPx="150"
           @click="scheduleAppointment"
           class="white-text"
-          >Schedule Appointment</CustomButton
         >
+          Schedule Appointment
+        </CustomButton>
       </div>
     </div>
   </div>
 </template>
-
 <style scoped>
 .container {
   display: flex;
@@ -444,6 +492,7 @@ watch(
   justify-content: center;
   text-align: center;
 }
+
 .service-options {
   max-height: 60px;
   overflow-y: auto;
@@ -451,8 +500,13 @@ watch(
 
 .service-option {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  margin-bottom: 10px;
+}
+
+.service-option span {
+  font-size: 14px;
+  margin-right: 10px;
 }
 
 .delete-button {
@@ -461,12 +515,36 @@ watch(
   color: red;
   cursor: pointer;
 }
-.white-text {
-  color: white;
+
+.availability-section {
+  margin-bottom: 20px;
 }
-.error-message {
-  color: red;
-  font-size: 12px;
-  font-weight: bold;
+
+.availability-message {
+  margin-top: 10px;
+}
+
+.select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.select-wrapper select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  appearance: none;
+}
+
+.select-wrapper::after {
+  content: "\25BC";
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #666;
 }
 </style>

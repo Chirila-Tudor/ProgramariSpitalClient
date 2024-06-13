@@ -22,7 +22,7 @@ async function fetchAppointmentsByScheduledPerson(username) {
 
 <template>
   <div class="appointments-page">
-    <h1>Programarile tale</h1>
+    <h1>Programările tale</h1>
     <div v-if="appointments.length" class="appointments-grid">
       <div
         v-for="appointment in appointments"
@@ -31,28 +31,26 @@ async function fetchAppointmentsByScheduledPerson(username) {
       >
         <div class="appointment-details">
           <p>
-            <strong>Scheduled Person:</strong>
+            <strong>Pacient:</strong>
             {{ appointment.firstName + " " + appointment.lastName }}
           </p>
+          <p><strong>Data programării:</strong> {{ appointment.chooseDate }}</p>
           <p>
-            <strong>Date of Appointment:</strong> {{ appointment.chooseDate }}
+            <strong>Ora programării:</strong> {{ appointment.appointmentHour }}
           </p>
           <p>
-            <strong>Type of Service:</strong>
+            <strong>Serviciu:</strong>
             {{
               appointment.typeOfServices
                 .map((service) => service.service)
                 .join(", ")
             }}
           </p>
-          <p>
-            <strong>Appointment Hour:</strong> {{ appointment.appointmentHour }}
-          </p>
         </div>
       </div>
     </div>
     <div v-else>
-      <p>No appointments available.</p>
+      <p>Nu aveti nicio programare.</p>
     </div>
   </div>
 </template>
