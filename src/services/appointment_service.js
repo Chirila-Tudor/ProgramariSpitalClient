@@ -16,7 +16,7 @@ export async function createAppointment(appointmentRequestDTO, username) {
         appointmentHour: appointmentRequestDTO.appointmentHour,
         periodOfAppointment: appointmentRequestDTO.periodOfAppointment,
         hospitalHallName: appointmentRequestDTO.hospitalHallName,
-        typeOfServices: appointmentRequestDTO.typeOfService,
+        typeOfServices: appointmentRequestDTO.typeOfServices,
       }),
     }
   );
