@@ -8,6 +8,7 @@ export async function addService(typeOfServiceRequestDTO) {
       service: typeOfServiceRequestDTO.service,
       doctorsWhoCanPerformService:
         typeOfServiceRequestDTO.doctorsWhoCanPerformService,
+      duration: typeOfServiceRequestDTO.duration,
     }),
   });
   return response;

@@ -25,29 +25,29 @@ function submit() {
   if (oldPassword.value && newPassword.value && confirmNewPassword.value) {
     if (newPassword.value === confirmNewPassword.value) {
       let passwordFormatOK = true;
-      const upperCaseRegex = /[A-Z]/;
-      const specialCharacterRegex = /[#$^&*_@!?]/;
+      // const upperCaseRegex = /[A-Z]/;
+      // const specialCharacterRegex = /[#$^&*_@!?]/;
 
-      if (newPassword.value.length < 12) {
-        errorMessage.value =
-          "The new password must contain at least 12 characters";
-        showErrorMessage.value = true;
-        passwordFormatOK = false;
-      }
+      // if (newPassword.value.length < 12) {
+      //   errorMessage.value =
+      //     "The new password must contain at least 12 characters";
+      //   showErrorMessage.value = true;
+      //   passwordFormatOK = false;
+      // }
 
-      if (!upperCaseRegex.test(newPassword.value) && passwordFormatOK) {
-        errorMessage.value =
-          "The new password must contain at least one uppercase character";
-        showErrorMessage.value = true;
-        passwordFormatOK = false;
-      }
+      // if (!upperCaseRegex.test(newPassword.value) && passwordFormatOK) {
+      //   errorMessage.value =
+      //     "The new password must contain at least one uppercase character";
+      //   showErrorMessage.value = true;
+      //   passwordFormatOK = false;
+      // }
 
-      if (!specialCharacterRegex.test(newPassword.value) && passwordFormatOK) {
-        errorMessage.value =
-          "The new password must contain at least one special character(#$^&*_@)";
-        showErrorMessage.value = true;
-        passwordFormatOK = false;
-      }
+      // if (!specialCharacterRegex.test(newPassword.value) && passwordFormatOK) {
+      //   errorMessage.value =
+      //     "The new password must contain at least one special character(#$^&*_@)";
+      //   showErrorMessage.value = true;
+      //   passwordFormatOK = false;
+      // }
       if (passwordFormatOK) {
         changePassword({
           username: localStorage.getItem("username"),
@@ -83,15 +83,15 @@ function handleNewPasswordTextChanged(password) {
 function handleConfirmPasswordTextChanged(password) {
   confirmNewPassword.value = password;
 }
-function checkPassword() {
-  passwordLength.value = newPassword.value.length;
-  const format = /[!@#$%^&*()_+\-=\[\]{};':"\\,.<>\/?]/;
+// function checkPassword() {
+//   passwordLength.value = newPassword.value.length;
+//   const format = /[!@#$%^&*()_+\-=\[\]{};':"\\,.<>\/?]/;
 
-  containsTwelveCharacters.value = passwordLength.value > 12 ? true : false;
-  containsNumber.value = /\d/.test(newPassword.value);
-  containsUppercase.value = /[A-Z]/.test(newPassword.value);
-  containsSpecialCharacter.value = format.test(newPassword.value);
-}
+//   containsTwelveCharacters.value = passwordLength.value > 12 ? true : false;
+//   containsNumber.value = /\d/.test(newPassword.value);
+//   containsUppercase.value = /[A-Z]/.test(newPassword.value);
+//   containsSpecialCharacter.value = format.test(newPassword.value);
+// }
 </script>
 
 <template>
@@ -160,8 +160,8 @@ function checkPassword() {
   flex-direction: column;
   align-items: center;
   margin-top: 10px;
-  width: 40vh;
-  height: 50vh;
+  width: 50vh;
+  height: 60vh;
   gap: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;

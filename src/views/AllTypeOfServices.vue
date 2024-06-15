@@ -9,8 +9,25 @@ onMounted(() => {
   fetchAllServices();
 });
 
+// async function fetchAllServices() {
+//   await getAllServices().then((res) => (services.value = res));
+// }
 async function fetchAllServices() {
-  await getAllServices().then((res) => (services.value = res));
+  try {
+    const res = await getAllServices();
+    services.value = res.map((service) => ({
+      ...service,
+      durationFormatted: formatDuration(service.duration),
+    }));
+  } catch (error) {
+    console.error("Error fetching services:", error);
+  }
+}
+
+function formatDuration(minutes) {
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  return `${hours}h ${mins}m`;
 }
 </script>
 
@@ -21,6 +38,7 @@ async function fetchAllServices() {
       <div v-for="service in services" :key="service.id" class="service-card">
         <div class="service-details">
           <p><strong>Nume serviciu:</strong> {{ service.service }}</p>
+          <p><strong>Durată:</strong> {{ service.durationFormatted }}</p>
           <p>
             <strong>Doctori:</strong>
             {{ service.doctorsWhoCanPerformService.join(", ") }}

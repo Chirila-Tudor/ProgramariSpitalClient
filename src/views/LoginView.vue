@@ -64,10 +64,9 @@ function handlePasswordTextChanged(password) {
         </span>
         <FormTitle label="Log In" />
       </div>
-      <InvalidInputMessage
-        :message="errorMessage"
-        :class="{ 'error-message-visible': showErrorMessage }"
-      />
+      <div v-if="showErrorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
       <div>
         <CustomInput
           type="text"
@@ -107,7 +106,7 @@ function handlePasswordTextChanged(password) {
   align-items: center;
   gap: 15vw;
   position: relative;
-  margin-top: 20vh;
+  margin-top: 12vh;
 }
 
 .imageContainer {
@@ -150,7 +149,7 @@ input {
 .white-text {
   color: white;
 }
-.error-message-visible {
+.error-message {
   display: block;
   color: red;
   margin-bottom: 10px;

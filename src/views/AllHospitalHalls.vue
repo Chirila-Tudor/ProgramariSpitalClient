@@ -46,7 +46,7 @@ function editHall(hallId) {
       <div v-for="hall in halls" :key="hall.id" class="hall-card">
         <div class="hall-details">
           <p><strong>Numele camerei:</strong> {{ hall.room }}</p>
-          <p><strong>Dcotorul:</strong> {{ hall.doctorUsername }}</p>
+          <!-- <p><strong>Doctorul:</strong> {{ hall.doctorUsername }}</p> -->
           <p>
             <strong>Echipamente:</strong>
             {{ hall.equipment.map((equipment) => equipment.name).join(", ") }}

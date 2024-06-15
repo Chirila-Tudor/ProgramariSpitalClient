@@ -65,7 +65,7 @@ async function fetchAvailableTimes() {
 async function handleUpdate() {
   await updateAppointment(id, appointment.value);
   const role = localStorage.getItem("role");
-  if (role === "DOCTOR") {
+  if (role === "Doctor") {
     router.push({ name: "all-appointments-doctor" });
   }
 }

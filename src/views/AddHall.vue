@@ -139,7 +139,7 @@ watch(
         <CustomInput
           type="text"
           id="room-name-input"
-          placeholder="Room Name"
+          placeholder="Denumire cameră"
           v-model:model-value="roomName"
         />
       </div>
@@ -151,7 +151,7 @@ watch(
         <CustomInput
           type="text"
           id="doctor-name-input"
-          placeholder="Doctor Name"
+          placeholder="Doctor"
           v-model:model-value="doctorName"
         />
       </div>
@@ -163,7 +163,7 @@ watch(
         <CustomInput
           type="text"
           id="equipment-input"
-          placeholder="Add Equipment"
+          placeholder="Adăugare echipament"
           v-model:model-value="newEquipment"
           @keydown.enter.prevent="addEquipment"
         />

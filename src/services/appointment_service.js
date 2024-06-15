@@ -93,3 +93,11 @@ export async function getDoctorDateAvailability(
   const json = await response.json();
   return json;
 }
+export async function getPeriodOptions() {
+  const response = await fetch(`${API_URL}/optionPeriod`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch period options");
+  }
+  const json = await response.json();
+  return json;
+}
