@@ -15,6 +15,7 @@ import {
   getDoctorsByTypeOfService,
   getAllServices,
 } from "../services/typeOfWork_service";
+import { getAllHalls } from "../services/hall_service";
 
 const route = useRoute();
 const scheduledPerson = ref("");
@@ -24,9 +25,7 @@ const lastName = ref("");
 const phoneNumber = ref("");
 const dateOfBirth = ref("");
 const appointmentDate = ref("");
-const appointmentHour = ref("");
 const period = ref("");
-const hall = ref("");
 const errors = ref({
   scheduledPerson: "",
   email: "",
@@ -48,11 +47,14 @@ const selectedService = ref("");
 const selectedDoctor = ref("");
 const selectedTime = ref("");
 const periodOptions = ref([]);
+const halls = ref([]);
+const selectedHall = ref("");
 
 onMounted(async () => {
   try {
     services.value = await getAllServices();
     periodOptions.value = await getPeriodOptions();
+    halls.value = await getAllHalls();
     console.log(services.value);
   } catch (error) {
     console.error("Error fetching services:", error);
@@ -104,6 +106,7 @@ async function fetchAvailableTimes() {
 function redirectToHome() {
   router.push("/");
 }
+
 function redirectToAllAppointments() {
   router.push("/all-appointments");
 }
@@ -124,7 +127,8 @@ async function scheduleAppointment() {
     chooseDate: appointmentDate.value,
     appointmentHour: selectedTime.value,
     periodOfAppointment: period.value,
-    hospitalHallName: hall.value,
+    hospitalHallName: halls.value.find((hall) => hall.id === selectedHall.value)
+      ?.room,
     typeOfServices: selectedService.value,
   };
 
@@ -141,6 +145,7 @@ async function scheduleAppointment() {
     console.error("Error scheduling appointment:", error);
   }
 }
+
 function validateForm() {
   const errors = {};
   if (!scheduledPerson.value)
@@ -155,7 +160,7 @@ function validateForm() {
   if (!selectedTime.value)
     errors.appointmentHour = "Appointment Hour is required";
   if (!period.value) errors.period = "Period of Time is required";
-  if (!hall.value) errors.hall = "Hall is required";
+  if (!selectedHall.value) errors.hall = "Hall is required";
   return errors;
 }
 
@@ -170,7 +175,7 @@ watch(
     appointmentDate,
     selectedTime,
     period,
-    hall,
+    selectedHall,
   ],
   validateForm
 );
@@ -262,12 +267,14 @@ watch(
       <div class="input-group">
         <label for="room-input">Sală:</label>
         <div v-if="errors.hall" class="error-message">{{ errors.hall }}</div>
-        <CustomInput
-          type="text"
-          id="room-input"
-          placeholder="Hall"
-          v-model:model-value="hall"
-        />
+        <div class="select-wrapper">
+          <select id="room-input" v-model="selectedHall">
+            <option value="" disabled>Selectează sală</option>
+            <option v-for="hall in halls" :value="hall.id" :key="hall.id">
+              {{ hall.room }}
+            </option>
+          </select>
+        </div>
       </div>
       <div class="input-group">
         <label for="service-type-input">Serviciu:</label>
