@@ -114,6 +114,7 @@ function deleteEquipment(index) {
           id="update-hospital-hall"
           @click="updateHospitalHalls"
           class="white-text"
+          :widthInPx="150"
         >
           Modificare cameră
         </CustomButton>
@@ -135,7 +136,7 @@ function deleteEquipment(index) {
   border: 1px solid #ccc;
   border-radius: 10px;
   background-color: #f9f9f9;
-  width: 40vh;
+  max-width: 500px;
 }
 
 .input-group {
@@ -187,5 +188,25 @@ function deleteEquipment(index) {
 .title-width {
   width: 30vh;
   margin-left: 5vh;
+}
+@media (min-width: 1200px) {
+  .form-container {
+    min-width: 300px;
+    padding: 30px;
+  }
+
+  .title-width {
+    font-size: 24px;
+    white-space: nowrap;
+  }
+
+  .select-wrapper select {
+    padding: 15px;
+  }
+
+  .button-group {
+    gap: 20px;
+    white-space: nowrap;
+  }
 }
 </style>

@@ -192,7 +192,7 @@ watch(
         >
           home
         </span>
-        <FormTitle label="Crează o programare" />
+        <FormTitle label="Crează o programare" class="title-width" />
       </div>
       <div class="input-group">
         <label for="scheduled-person-input">Pacient:</label>
@@ -374,7 +374,7 @@ watch(
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 160vh;
+  height: 185vh;
 }
 
 .form-container {
@@ -382,7 +382,7 @@ watch(
   border: 1px solid #ccc;
   border-radius: 10px;
   background-color: #f9f9f9;
-  width: 40vh;
+  max-width: 500px;
 }
 
 .input-group {
@@ -401,7 +401,7 @@ watch(
   justify-content: space-between;
   align-items: center;
   padding-bottom: 30px;
-  width: 30vh;
+  width: 25vh;
 }
 
 .material-symbols-outlined {
@@ -471,5 +471,25 @@ watch(
 }
 .white-text {
   color: white;
+}
+
+@media (min-width: 1200px) {
+  .form-container {
+    min-width: 400px;
+    padding: 30px;
+  }
+
+  .title-width {
+    font-size: 24px;
+    white-space: nowrap;
+  }
+
+  .select-wrapper select {
+    padding: 15px;
+  }
+
+  .button-group {
+    gap: 20px;
+  }
 }
 </style>

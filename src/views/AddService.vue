@@ -105,7 +105,7 @@ watch(duration, () => {
         </div>
         <CustomInput
           id="service-name-input"
-          placeholder="Service Name"
+          placeholder="Nume serviciu"
           v-model="serviceName"
         />
       </div>
@@ -165,6 +165,7 @@ watch(duration, () => {
   justify-content: center;
   align-items: center;
   height: 90vh;
+  padding: 20px;
 }
 
 .form-container {
@@ -172,7 +173,6 @@ watch(duration, () => {
   border: 1px solid #ccc;
   border-radius: 10px;
   background-color: #f9f9f9;
-  width: 40vh;
 }
 
 .input-group {
@@ -244,5 +244,25 @@ input[type="checkbox"]:checked + .doctor-label {
 }
 .white-text {
   color: white;
+}
+
+@media (min-width: 1200px) {
+  .form-container {
+    min-width: 300px;
+    padding: 30px;
+  }
+
+  .title-width {
+    font-size: 24px;
+    white-space: nowrap;
+  }
+
+  .select-wrapper select {
+    padding: 15px;
+  }
+
+  .button-group {
+    gap: 20px;
+  }
 }
 </style>

@@ -96,14 +96,13 @@ function handleConfirmPasswordTextChanged(password) {
 
 <template>
   <div class="container">
-    <div class="loginContainer">
+    <div class="form-container">
       <div class="title">
         <FormTitle label="Schimbare parolă" class="title-width" />
       </div>
-      <InvalidInputMessage
-        :message="errorMessage"
-        :class="{ 'error-message-visible': showErrorMessage }"
-      />
+      <div v-if="showErrorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
       <div id="password-input">
         <PasswordInput
           :label="'Vechea parolă'"
@@ -132,7 +131,11 @@ function handleConfirmPasswordTextChanged(password) {
         />
       </div>
       <div>
-        <CustomButton id="sign-in" @click="submit" class="white-text"
+        <CustomButton
+          id="sign-in"
+          @click="submit"
+          class="white-text"
+          :widthInPx="200"
           >Schimbă parola</CustomButton
         >
       </div>
@@ -147,7 +150,7 @@ function handleConfirmPasswordTextChanged(password) {
   align-items: center;
   gap: 15vw;
   position: relative;
-  margin-top: 20vh;
+  height: 90vh;
 }
 
 .imageContainer {
@@ -155,13 +158,10 @@ function handleConfirmPasswordTextChanged(password) {
   justify-content: center;
   align-items: center;
 }
-.loginContainer {
+.form-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 10px;
-  width: 50vh;
-  height: 60vh;
   gap: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -181,6 +181,31 @@ input {
   color: white;
 }
 .title-width {
-  width: 30vh;
+  width: 40vh;
+}
+.error-message {
+  color: red;
+  font-size: 14px;
+  font-weight: bold;
+}
+@media (min-width: 1200px) {
+  .form-container {
+    min-width: 300px;
+    padding: 30px;
+  }
+
+  .title-width {
+    font-size: 24px;
+    white-space: nowrap;
+  }
+
+  .select-wrapper select {
+    padding: 15px;
+  }
+
+  .button-group {
+    gap: 20px;
+    white-space: nowrap;
+  }
 }
 </style>

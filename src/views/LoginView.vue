@@ -62,7 +62,7 @@ function handlePasswordTextChanged(password) {
         >
           home
         </span>
-        <FormTitle label="Log In" />
+        <FormTitle label="Log In" class="title-width" />
       </div>
       <div v-if="showErrorMessage" class="error-message">
         {{ errorMessage }}
@@ -124,14 +124,13 @@ function handlePasswordTextChanged(password) {
   padding: 20px;
   background-color: #f9f9f9;
   gap: 20px;
-  width: 40vh;
-  height: 50vh;
 }
 .title {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 5vh;
+  gap: 10px;
 }
 input {
   padding: 5px;
@@ -153,5 +152,25 @@ input {
   display: block;
   color: red;
   margin-bottom: 10px;
+}
+
+@media (min-width: 1200px) {
+  .form-container {
+    min-width: 300px;
+    padding: 30px;
+  }
+
+  .title-width {
+    font-size: 24px;
+    white-space: nowrap;
+  }
+
+  .select-wrapper select {
+    padding: 15px;
+  }
+
+  .button-group {
+    gap: 20px;
+  }
 }
 </style>

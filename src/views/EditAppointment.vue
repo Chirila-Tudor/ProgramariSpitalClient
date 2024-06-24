@@ -142,7 +142,7 @@ function handleCancel() {
   border-radius: 10px;
   background-color: #f9f9f9;
   width: 50vh;
-  height: 55vh;
+  height: 70vh;
 }
 
 .title {

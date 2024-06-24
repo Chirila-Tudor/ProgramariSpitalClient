@@ -197,7 +197,9 @@ watch(
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 90vh;
+  height: 80vh;
+  padding: 20px;
+  margin-top: 20px;
 }
 
 .form-container {
@@ -205,7 +207,7 @@ watch(
   border: 1px solid #ccc;
   border-radius: 10px;
   background-color: #f9f9f9;
-  width: 40vh;
+  max-width: 500px;
 }
 
 .input-group {
@@ -261,11 +263,32 @@ watch(
 }
 .title-width {
   width: 30vh;
-  margin-left: 5vh;
+  margin-left: 1vh;
 }
 .error-message {
   color: red;
   font-size: 12px;
   font-weight: bold;
+}
+
+@media (min-width: 1200px) {
+  .form-container {
+    min-width: 300px;
+    padding: 30px;
+  }
+
+  .title-width {
+    font-size: 24px;
+    white-space: nowrap;
+  }
+
+  .select-wrapper select {
+    padding: 15px;
+  }
+
+  .button-group {
+    gap: 20px;
+    white-space: nowrap;
+  }
 }
 </style>
