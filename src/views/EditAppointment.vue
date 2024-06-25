@@ -65,7 +65,7 @@ async function fetchAvailableTimes() {
 async function handleUpdate() {
   await updateAppointment(id, appointment.value);
   const role = localStorage.getItem("role");
-  if (role === "DOCTOR") {
+  if (role === "Doctor") {
     router.push({ name: "all-appointments-doctor" });
   }
 }
@@ -142,7 +142,7 @@ function handleCancel() {
   border-radius: 10px;
   background-color: #f9f9f9;
   width: 50vh;
-  height: 55vh;
+  height: 70vh;
 }
 
 .title {

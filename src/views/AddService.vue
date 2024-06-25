@@ -10,9 +10,11 @@ import router from "../router";
 const serviceName = ref("");
 const selectedDoctors = ref([]);
 const doctorOptions = ref([]);
+const duration = ref("");
 const errors = ref({
   serviceName: "",
   selectedDoctors: "",
+  duration: "",
 });
 
 async function fetchDoctors() {
@@ -44,6 +46,13 @@ async function addServiceHandler() {
     errors.value.selectedDoctors = "At least one doctor is required";
     valid = false;
   }
+  if (!duration.value) {
+    errors.value.duration = "Duration is required";
+    valid = false;
+  } else if (isNaN(duration.value) || duration.value <= 0) {
+    errors.value.duration = "Duration must be a positive number";
+    valid = false;
+  }
   if (!valid) {
     return;
   }
@@ -51,6 +60,7 @@ async function addServiceHandler() {
   const serviceData = {
     service: serviceName.value,
     doctorsWhoCanPerformService: selectedDoctors.value,
+    duration: Number(duration.value),
   };
 
   try {
@@ -76,6 +86,10 @@ watch(
   },
   { deep: true }
 );
+
+watch(duration, () => {
+  if (errors.value.duration) errors.value.duration = "";
+});
 </script>
 
 <template>
@@ -91,12 +105,24 @@ watch(
         </div>
         <CustomInput
           id="service-name-input"
-          placeholder="Service Name"
+          placeholder="Nume serviciu"
           v-model="serviceName"
         />
       </div>
       <div class="input-group">
-        <label>Username doctori:</label>
+        <label for="duration-input">Durata (minute):</label>
+        <div v-if="errors.duration" class="error-message">
+          {{ errors.duration }}
+        </div>
+        <CustomInput
+          id="duration-input"
+          placeholder="Durata"
+          v-model="duration"
+          type="number"
+        />
+      </div>
+      <div class="input-group">
+        <label for="doctor-name-input">Username doctori:</label>
         <div v-if="errors.selectedDoctors" class="error-message">
           {{ errors.selectedDoctors }}
         </div>
@@ -139,6 +165,7 @@ watch(
   justify-content: center;
   align-items: center;
   height: 90vh;
+  padding: 20px;
 }
 
 .form-container {
@@ -146,13 +173,12 @@ watch(
   border: 1px solid #ccc;
   border-radius: 10px;
   background-color: #f9f9f9;
-  width: 40vh;
 }
 
 .input-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .label {
@@ -218,5 +244,25 @@ input[type="checkbox"]:checked + .doctor-label {
 }
 .white-text {
   color: white;
+}
+
+@media (min-width: 1200px) {
+  .form-container {
+    min-width: 300px;
+    padding: 30px;
+  }
+
+  .title-width {
+    font-size: 24px;
+    white-space: nowrap;
+  }
+
+  .select-wrapper select {
+    padding: 15px;
+  }
+
+  .button-group {
+    gap: 20px;
+  }
 }
 </style>

@@ -9,11 +9,13 @@ import {
   createAppointment,
   getDoctorDateAvailability,
   getAvailableTimes,
+  getPeriodOptions,
 } from "../services/appointment_service";
 import {
   getDoctorsByTypeOfService,
   getAllServices,
 } from "../services/typeOfWork_service";
+import { getAllHalls } from "../services/hall_service";
 
 const route = useRoute();
 const scheduledPerson = ref("");
@@ -23,11 +25,7 @@ const lastName = ref("");
 const phoneNumber = ref("");
 const dateOfBirth = ref("");
 const appointmentDate = ref("");
-const appointmentHour = ref("");
 const period = ref("");
-const hall = ref("");
-// const serviceOptions = ref([]);
-// const newServiceOption = ref("");
 const errors = ref({
   scheduledPerson: "",
   email: "",
@@ -48,10 +46,15 @@ const availableTimes = ref([]);
 const selectedService = ref("");
 const selectedDoctor = ref("");
 const selectedTime = ref("");
+const periodOptions = ref([]);
+const halls = ref([]);
+const selectedHall = ref("");
 
 onMounted(async () => {
   try {
     services.value = await getAllServices();
+    periodOptions.value = await getPeriodOptions();
+    halls.value = await getAllHalls();
     console.log(services.value);
   } catch (error) {
     console.error("Error fetching services:", error);
@@ -103,6 +106,7 @@ async function fetchAvailableTimes() {
 function redirectToHome() {
   router.push("/");
 }
+
 function redirectToAllAppointments() {
   router.push("/all-appointments");
 }
@@ -123,7 +127,8 @@ async function scheduleAppointment() {
     chooseDate: appointmentDate.value,
     appointmentHour: selectedTime.value,
     periodOfAppointment: period.value,
-    hospitalHallName: hall.value,
+    hospitalHallName: halls.value.find((hall) => hall.id === selectedHall.value)
+      ?.room,
     typeOfServices: selectedService.value,
   };
 
@@ -140,6 +145,7 @@ async function scheduleAppointment() {
     console.error("Error scheduling appointment:", error);
   }
 }
+
 function validateForm() {
   const errors = {};
   if (!scheduledPerson.value)
@@ -154,7 +160,7 @@ function validateForm() {
   if (!selectedTime.value)
     errors.appointmentHour = "Appointment Hour is required";
   if (!period.value) errors.period = "Period of Time is required";
-  if (!hall.value) errors.hall = "Hall is required";
+  if (!selectedHall.value) errors.hall = "Hall is required";
   return errors;
 }
 
@@ -169,7 +175,7 @@ watch(
     appointmentDate,
     selectedTime,
     period,
-    hall,
+    selectedHall,
   ],
   validateForm
 );
@@ -186,10 +192,10 @@ watch(
         >
           home
         </span>
-        <FormTitle label="Make an Appointment" />
+        <FormTitle label="Crează o programare" class="title-width" />
       </div>
       <div class="input-group">
-        <label for="scheduled-person-input">Scheduled Person:</label>
+        <label for="scheduled-person-input">Pacient:</label>
         <div v-if="errors.scheduledPerson" class="error-message">
           {{ errors.scheduledPerson }}
         </div>
@@ -201,7 +207,7 @@ watch(
         />
       </div>
       <div class="input-group">
-        <label for="email-input">Email:</label>
+        <label for="email-input">E-mail:</label>
         <div v-if="errors.email" class="error-message">{{ errors.email }}</div>
         <CustomInput
           type="email"
@@ -211,19 +217,7 @@ watch(
         />
       </div>
       <div class="input-group">
-        <label for="first-name-input">First Name:</label>
-        <div v-if="errors.firstName" class="error-message">
-          {{ errors.firstName }}
-        </div>
-        <CustomInput
-          type="text"
-          id="first-name-input"
-          placeholder="First Name"
-          v-model:model-value="firstName"
-        />
-      </div>
-      <div class="input-group">
-        <label for="last-name-input">Last Name:</label>
+        <label for="last-name-input">Nume:</label>
         <div v-if="errors.lastName" class="error-message">
           {{ errors.lastName }}
         </div>
@@ -235,7 +229,19 @@ watch(
         />
       </div>
       <div class="input-group">
-        <label for="phone-number-input">Phone Number:</label>
+        <label for="first-name-input">Prenume:</label>
+        <div v-if="errors.firstName" class="error-message">
+          {{ errors.firstName }}
+        </div>
+        <CustomInput
+          type="text"
+          id="first-name-input"
+          placeholder="First Name"
+          v-model:model-value="firstName"
+        />
+      </div>
+      <div class="input-group">
+        <label for="phone-number-input">Număr de telefon:</label>
         <div v-if="errors.phoneNumber" class="error-message">
           {{ errors.phoneNumber }}
         </div>
@@ -247,7 +253,7 @@ watch(
         />
       </div>
       <div class="input-group">
-        <label for="dob-input">Date of Birth:</label>
+        <label for="dob-input">Data nașterii:</label>
         <div v-if="errors.dateOfBirth" class="error-message">
           {{ errors.dateOfBirth }}
         </div>
@@ -259,17 +265,19 @@ watch(
         />
       </div>
       <div class="input-group">
-        <label for="room-input">Hall:</label>
+        <label for="room-input">Sală:</label>
         <div v-if="errors.hall" class="error-message">{{ errors.hall }}</div>
-        <CustomInput
-          type="text"
-          id="room-input"
-          placeholder="Hall"
-          v-model:model-value="hall"
-        />
+        <div class="select-wrapper">
+          <select id="room-input" v-model="selectedHall">
+            <option value="" disabled>Selectează sală</option>
+            <option v-for="hall in halls" :value="hall.id" :key="hall.id">
+              {{ hall.room }}
+            </option>
+          </select>
+        </div>
       </div>
       <div class="input-group">
-        <label for="service-type-input">Type of Service:</label>
+        <label for="service-type-input">Serviciu:</label>
         <div v-if="errors.serviceOptions" class="error-message">
           {{ errors.serviceOptions }}
         </div>
@@ -279,7 +287,7 @@ watch(
             v-model="selectedService"
             @change="fetchDoctors"
           >
-            <option value="" disabled>Select Service</option>
+            <option value="" disabled>Selectează serviciu</option>
             <option
               v-for="service in services"
               :value="service.id"
@@ -290,13 +298,13 @@ watch(
           </select>
         </div>
         <div class="input-group">
-          <label for="doctor-select">Choose Doctor:</label>
+          <label for="doctor-select">Doctor:</label>
           <div v-if="errors.doctor" class="error-message">
             {{ errors.doctor }}
           </div>
           <div class="select-wrapper">
             <select id="doctor-select" v-model="selectedDoctor">
-              <option value="" disabled>Select Doctor</option>
+              <option value="" disabled>Alege doctor</option>
               <option v-for="doctor in doctors" :value="doctor" :key="doctor">
                 {{ doctor }}
               </option>
@@ -305,7 +313,7 @@ watch(
         </div>
       </div>
       <div class="availability-section">
-        <label for="date-input">Choose Date of Appointment:</label>
+        <label for="date-input">Data programării:</label>
         <input
           type="date"
           id="date-input"
@@ -320,7 +328,7 @@ watch(
           {{ errors.appointmentDate }}
         </div>
         <div v-if="availableTimes.length > 0">
-          <label for="time-select">Choose Appointment Time:</label>
+          <label for="time-select">Ora:</label>
           <div class="select-wrapper">
             <select id="time-select" v-model="selectedTime">
               <option v-for="time in availableTimes" :value="time" :key="time">
@@ -330,16 +338,22 @@ watch(
           </div>
         </div>
         <div class="input-group">
-          <label for="period-input">Period of Time:</label>
+          <label for="period-input">Perioada zilei:</label>
           <div v-if="errors.period" class="error-message">
             {{ errors.period }}
           </div>
-          <CustomInput
-            type="text"
-            id="period-input"
-            placeholder="Period of Time"
-            v-model:model-value="period"
-          />
+          <div class="select-wrapper">
+            <select id="period-input" v-model="period">
+              <option value="" disabled>Selectează perioada zilei</option>
+              <option
+                v-for="option in periodOptions"
+                :value="option"
+                :key="option"
+              >
+                {{ option }}
+              </option>
+            </select>
+          </div>
         </div>
       </div>
       <div class="button-group">
@@ -349,7 +363,7 @@ watch(
           @click="scheduleAppointment"
           class="white-text"
         >
-          Schedule Appointment
+          Programează
         </CustomButton>
       </div>
     </div>
@@ -360,7 +374,7 @@ watch(
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 150vh;
+  height: 185vh;
 }
 
 .form-container {
@@ -368,13 +382,13 @@ watch(
   border: 1px solid #ccc;
   border-radius: 10px;
   background-color: #f9f9f9;
-  width: 40vh;
+  max-width: 500px;
 }
 
 .input-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .label {
@@ -387,7 +401,7 @@ watch(
   justify-content: space-between;
   align-items: center;
   padding-bottom: 30px;
-  width: 30vh;
+  width: 25vh;
 }
 
 .material-symbols-outlined {
@@ -454,5 +468,28 @@ watch(
   transform: translateY(-50%);
   pointer-events: none;
   color: #666;
+}
+.white-text {
+  color: white;
+}
+
+@media (min-width: 1200px) {
+  .form-container {
+    min-width: 400px;
+    padding: 30px;
+  }
+
+  .title-width {
+    font-size: 24px;
+    white-space: nowrap;
+  }
+
+  .select-wrapper select {
+    padding: 15px;
+  }
+
+  .button-group {
+    gap: 20px;
+  }
 }
 </style>

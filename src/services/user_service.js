@@ -116,3 +116,11 @@ export async function getAllDoctors() {
   const json = response.json();
   return json;
 }
+export async function getUserOptions() {
+  const response = await fetch(`${API_URL}/optionUser`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch period options");
+  }
+  const json = await response.json();
+  return json;
+}

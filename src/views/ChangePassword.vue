@@ -25,29 +25,29 @@ function submit() {
   if (oldPassword.value && newPassword.value && confirmNewPassword.value) {
     if (newPassword.value === confirmNewPassword.value) {
       let passwordFormatOK = true;
-      const upperCaseRegex = /[A-Z]/;
-      const specialCharacterRegex = /[#$^&*_@!?]/;
+      // const upperCaseRegex = /[A-Z]/;
+      // const specialCharacterRegex = /[#$^&*_@!?]/;
 
-      if (newPassword.value.length < 12) {
-        errorMessage.value =
-          "The new password must contain at least 12 characters";
-        showErrorMessage.value = true;
-        passwordFormatOK = false;
-      }
+      // if (newPassword.value.length < 12) {
+      //   errorMessage.value =
+      //     "The new password must contain at least 12 characters";
+      //   showErrorMessage.value = true;
+      //   passwordFormatOK = false;
+      // }
 
-      if (!upperCaseRegex.test(newPassword.value) && passwordFormatOK) {
-        errorMessage.value =
-          "The new password must contain at least one uppercase character";
-        showErrorMessage.value = true;
-        passwordFormatOK = false;
-      }
+      // if (!upperCaseRegex.test(newPassword.value) && passwordFormatOK) {
+      //   errorMessage.value =
+      //     "The new password must contain at least one uppercase character";
+      //   showErrorMessage.value = true;
+      //   passwordFormatOK = false;
+      // }
 
-      if (!specialCharacterRegex.test(newPassword.value) && passwordFormatOK) {
-        errorMessage.value =
-          "The new password must contain at least one special character(#$^&*_@)";
-        showErrorMessage.value = true;
-        passwordFormatOK = false;
-      }
+      // if (!specialCharacterRegex.test(newPassword.value) && passwordFormatOK) {
+      //   errorMessage.value =
+      //     "The new password must contain at least one special character(#$^&*_@)";
+      //   showErrorMessage.value = true;
+      //   passwordFormatOK = false;
+      // }
       if (passwordFormatOK) {
         changePassword({
           username: localStorage.getItem("username"),
@@ -83,27 +83,26 @@ function handleNewPasswordTextChanged(password) {
 function handleConfirmPasswordTextChanged(password) {
   confirmNewPassword.value = password;
 }
-function checkPassword() {
-  passwordLength.value = newPassword.value.length;
-  const format = /[!@#$%^&*()_+\-=\[\]{};':"\\,.<>\/?]/;
+// function checkPassword() {
+//   passwordLength.value = newPassword.value.length;
+//   const format = /[!@#$%^&*()_+\-=\[\]{};':"\\,.<>\/?]/;
 
-  containsTwelveCharacters.value = passwordLength.value > 12 ? true : false;
-  containsNumber.value = /\d/.test(newPassword.value);
-  containsUppercase.value = /[A-Z]/.test(newPassword.value);
-  containsSpecialCharacter.value = format.test(newPassword.value);
-}
+//   containsTwelveCharacters.value = passwordLength.value > 12 ? true : false;
+//   containsNumber.value = /\d/.test(newPassword.value);
+//   containsUppercase.value = /[A-Z]/.test(newPassword.value);
+//   containsSpecialCharacter.value = format.test(newPassword.value);
+// }
 </script>
 
 <template>
   <div class="container">
-    <div class="loginContainer">
+    <div class="form-container">
       <div class="title">
         <FormTitle label="Schimbare parolă" class="title-width" />
       </div>
-      <InvalidInputMessage
-        :message="errorMessage"
-        :class="{ 'error-message-visible': showErrorMessage }"
-      />
+      <div v-if="showErrorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
       <div id="password-input">
         <PasswordInput
           :label="'Vechea parolă'"
@@ -132,7 +131,11 @@ function checkPassword() {
         />
       </div>
       <div>
-        <CustomButton id="sign-in" @click="submit" class="white-text"
+        <CustomButton
+          id="sign-in"
+          @click="submit"
+          class="white-text"
+          :widthInPx="200"
           >Schimbă parola</CustomButton
         >
       </div>
@@ -147,7 +150,7 @@ function checkPassword() {
   align-items: center;
   gap: 15vw;
   position: relative;
-  margin-top: 20vh;
+  height: 90vh;
 }
 
 .imageContainer {
@@ -155,13 +158,10 @@ function checkPassword() {
   justify-content: center;
   align-items: center;
 }
-.loginContainer {
+.form-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 10px;
-  width: 40vh;
-  height: 50vh;
   gap: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -181,6 +181,31 @@ input {
   color: white;
 }
 .title-width {
-  width: 30vh;
+  width: 40vh;
+}
+.error-message {
+  color: red;
+  font-size: 14px;
+  font-weight: bold;
+}
+@media (min-width: 1200px) {
+  .form-container {
+    min-width: 300px;
+    padding: 30px;
+  }
+
+  .title-width {
+    font-size: 24px;
+    white-space: nowrap;
+  }
+
+  .select-wrapper select {
+    padding: 15px;
+  }
+
+  .button-group {
+    gap: 20px;
+    white-space: nowrap;
+  }
 }
 </style>

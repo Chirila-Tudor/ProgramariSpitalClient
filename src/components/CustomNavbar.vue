@@ -118,7 +118,7 @@ const cancelLogout = () => {
           Specialități
         </CustomButton>
         <CustomButton
-          v-if="userRole === 'NURSE'"
+          v-if="userRole === 'Asistentă'"
           class="nav-button"
           id="appointment"
           @click="redirectToAppointment"
@@ -126,7 +126,7 @@ const cancelLogout = () => {
           Programări
         </CustomButton>
         <CustomButton
-          v-if="userRole === 'NURSE' || userRole === 'ADMIN'"
+          v-if="userRole === 'Asistentă' || userRole === 'Admin'"
           class="nav-button"
           id="all-appointments"
           @click="redirectToAllAppointments"
@@ -134,7 +134,7 @@ const cancelLogout = () => {
           Toate Programările
         </CustomButton>
         <CustomButton
-          v-if="userRole === 'ADMIN'"
+          v-if="userRole === 'Admin'"
           class="nav-button"
           id="all-users"
           @click="redirectToAllUsers"
@@ -142,7 +142,7 @@ const cancelLogout = () => {
           Toți Utilizatorii
         </CustomButton>
         <CustomButton
-          v-if="userRole === 'ADMIN'"
+          v-if="userRole === 'Admin'"
           class="nav-button"
           id="add-employee"
           @click="redirectToAddEmployee"
@@ -150,7 +150,7 @@ const cancelLogout = () => {
           Adăugare Angajat
         </CustomButton>
         <CustomButton
-          v-if="userRole === 'ADMIN'"
+          v-if="userRole === 'Admin'"
           class="nav-button"
           id="add-hall"
           @click="redirectToAddHall"
@@ -158,7 +158,7 @@ const cancelLogout = () => {
           Adăugare Sală
         </CustomButton>
         <CustomButton
-          v-if="userRole === 'ADMIN'"
+          v-if="userRole === 'Admin'"
           class="nav-button"
           id="all-halls"
           @click="redirectToAllHalls"
@@ -166,7 +166,7 @@ const cancelLogout = () => {
           Toate Sălile
         </CustomButton>
         <CustomButton
-          v-if="userRole === 'PATIENT'"
+          v-if="userRole === 'Pacient'"
           class="nav-button"
           id="all-appointments-patient"
           @click="redirectToAllAppointmentsForPatient"
@@ -174,7 +174,7 @@ const cancelLogout = () => {
           Programările tale
         </CustomButton>
         <CustomButton
-          v-if="userRole === 'DOCTOR'"
+          v-if="userRole === 'Doctor'"
           class="nav-button"
           id="all-appointments-doctor"
           @click="redirectToAllAppointmentsForDoctor"
@@ -182,7 +182,7 @@ const cancelLogout = () => {
           Programările tale
         </CustomButton>
         <CustomButton
-          v-if="userRole === 'ADMIN'"
+          v-if="userRole === 'Admin'"
           class="nav-button"
           id="add-service"
           @click="redirectToAddService"
@@ -190,7 +190,7 @@ const cancelLogout = () => {
           Adăugare serviciu
         </CustomButton>
         <CustomButton
-          v-if="userRole === 'ADMIN'"
+          v-if="userRole === 'Admin'"
           class="nav-button"
           id="all-services"
           @click="redirectToAllServices"

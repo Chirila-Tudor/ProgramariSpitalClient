@@ -43,6 +43,7 @@ async function fetchRequestPassword() {
         type="submit"
         class="submit-button white-text"
         @click="fetchRequestPassword"
+        :widthInPx="200"
         >Trimitere nouă parolă</CustomButton
       >
     </div>
@@ -105,5 +106,25 @@ h1 {
 }
 .white-text {
   color: white;
+}
+@media (min-width: 1200px) {
+  .form-container {
+    min-width: 300px;
+    padding: 30px;
+  }
+
+  .title-width {
+    font-size: 24px;
+    white-space: nowrap;
+  }
+
+  .select-wrapper select {
+    padding: 15px;
+  }
+
+  .submit-button {
+    gap: 20px;
+    white-space: nowrap;
+  }
 }
 </style>

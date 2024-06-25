@@ -1,19 +1,28 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 import CustomButton from "../components/CustomButton.vue";
 import CustomInput from "../components/CustomInput.vue";
 import FormTitle from "../components/FormTitle.vue";
-import { addNewEmployee } from "../services/user_service";
+import { addNewEmployee, getUserOptions } from "../services/user_service";
 import router from "../router";
 
 const username = ref("");
 const role = ref("");
 const email = ref("");
+const roleOptions = ref([]);
 
 const errors = ref({
   username: "",
   role: "",
   email: "",
+});
+
+onMounted(async () => {
+  try {
+    roleOptions.value = await getUserOptions();
+  } catch (error) {
+    console.error("Error fetching users:", error);
+  }
 });
 
 function redirectToAllUsers() {
@@ -101,16 +110,18 @@ watch(role, (newValue) => {
         />
       </div>
       <div class="input-group">
-        <label for="role-input">Rol:</label>
-        <div v-if="errors.role" class="error-message">
-          {{ errors.role }}
+        <label for="period-input">Perioada zilei:</label>
+        <div v-if="errors.period" class="error-message">
+          {{ errors.period }}
         </div>
-        <CustomInput
-          type="text"
-          id="role-input"
-          placeholder="Role"
-          v-model:model-value="role"
-        />
+        <div class="select-wrapper">
+          <select id="role-input" v-model="role">
+            <option value="" disabled>Selectează tipul de user</option>
+            <option v-for="option in roleOptions" :value="option" :key="option">
+              {{ option }}
+            </option>
+          </select>
+        </div>
       </div>
       <div class="input-group">
         <label for="email-input">Email:</label>
@@ -150,8 +161,7 @@ watch(role, (newValue) => {
   border: 1px solid #ccc;
   border-radius: 10px;
   background-color: #f9f9f9;
-  width: 40vh;
-  height: 50vh;
+  max-width: 500px;
 }
 
 .input-group {
@@ -194,5 +204,47 @@ watch(role, (newValue) => {
   color: red;
   font-size: 12px;
   font-weight: bold;
+}
+.select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.select-wrapper select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  appearance: none;
+}
+
+.select-wrapper::after {
+  content: "\25BC";
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #666;
+}
+@media (min-width: 1200px) {
+  .form-container {
+    min-width: 300px;
+    padding: 30px;
+  }
+
+  .title-width {
+    font-size: 24px;
+    white-space: nowrap;
+  }
+
+  .select-wrapper select {
+    padding: 15px;
+  }
+
+  .button-group {
+    gap: 20px;
+  }
 }
 </style>
