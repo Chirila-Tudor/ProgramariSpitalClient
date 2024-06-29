@@ -110,7 +110,7 @@ watch(role, (newValue) => {
         />
       </div>
       <div class="input-group">
-        <label for="period-input">Perioada zilei:</label>
+        <label for="period-input">Rol:</label>
         <div v-if="errors.period" class="error-message">
           {{ errors.period }}
         </div>

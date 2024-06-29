@@ -5,6 +5,7 @@ import {
   getAppointment,
   updateAppointment,
   getAvailableTimes,
+  getPeriodOptions,
 } from "../services/appointment_service";
 import FormTitle from "../components/FormTitle.vue";
 import CustomButton from "../components/CustomButton.vue";
@@ -23,6 +24,7 @@ const appointment = ref({
 });
 
 const availableTimes = ref([]);
+const periodOptions = ref([]);
 const doctorUsername = localStorage.getItem("username");
 
 onMounted(async () => {
@@ -34,7 +36,8 @@ onMounted(async () => {
   appointment.value.typeOfServices =
     fetchedAppointment.typeOfServices[0].service;
   appointment.value.idService = fetchedAppointment.typeOfServices[0].idService;
-  console.log(appointment.value.id);
+
+  periodOptions.value = await getPeriodOptions();
 
   if (appointment.value.chooseDate && appointment.value.idService) {
     await fetchAvailableTimes();
@@ -79,10 +82,10 @@ function handleCancel() {
   <div class="container">
     <div class="form-container">
       <div class="title">
-        <FormTitle label="Edit Appointment" class="title-width" />
+        <FormTitle label="Editează programare" class="title-width" />
       </div>
       <div class="input-group">
-        <label for="chooseDate">Choose Date:</label>
+        <label for="chooseDate">Dată:</label>
         <CustomInput
           type="date"
           id="chooseDate"
@@ -91,7 +94,7 @@ function handleCancel() {
         />
       </div>
       <div class="input-group">
-        <label for="appointmentHour">Appointment Hour:</label>
+        <label for="appointmentHour">Ora:</label>
         <select id="appointmentHour" v-model="appointment.appointmentHour">
           <option v-for="time in availableTimes" :key="time" :value="time">
             {{ time }}
@@ -99,13 +102,15 @@ function handleCancel() {
         </select>
       </div>
       <div class="input-group">
-        <label for="periodOfAppointment">Period of Appointment:</label>
-        <CustomInput
-          type="text"
+        <label for="periodOfAppointment">Perioada zilei:</label>
+        <select
           id="periodOfAppointment"
-          placeholder="Period of Appointment"
-          v-model:model-value="appointment.periodOfAppointment"
-        />
+          v-model="appointment.periodOfAppointment"
+        >
+          <option v-for="period in periodOptions" :key="period" :value="period">
+            {{ period }}
+          </option>
+        </select>
       </div>
       <div class="button-group">
         <CustomButton
@@ -114,7 +119,7 @@ function handleCancel() {
           class="white-text"
           :widthInPx="200"
         >
-          Update Appointment
+          Modifică programarea
         </CustomButton>
         <CustomButton
           id="cancel-update"
